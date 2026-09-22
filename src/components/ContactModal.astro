@@ -1,0 +1,75 @@
+---
+// Modal za zakazivanje sastanka
+---
+
+<div id="contact-modal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Zatvori">&times;</button>
+    
+    <h3 class="modal-title" id="modal-title">Zakažite sastanak</h3>
+    <p class="modal-subtitle">Popunite formu i kontaktiraćemo vas u roku od 24 sata.</p>
+    
+    <form 
+      name="sastanak" 
+      method="POST" 
+      data-netlify="true" 
+      netlify-honeypot="bot-field"
+      class="modal-form"
+    >
+      <!-- Honeypot za botove -->
+      <p style="display:none;">
+        <label>Ne popunjavaj: <input name="bot-field" /></label>
+      </p>
+      
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="modal-ime">Ime i prezime *</label>
+          <input 
+            class="form-input" 
+            type="text" 
+            id="modal-ime" 
+            name="ime" 
+            required 
+            placeholder="Vaše ime"
+          />
+        </div>
+        
+        <div class="form-field">
+          <label class="form-label" for="modal-email">Email *</label>
+          <input 
+            class="form-input" 
+            type="email" 
+            id="modal-email" 
+            name="email" 
+            required 
+            placeholder="vas@email.com"
+          />
+        </div>
+      </div>
+      
+      <div class="form-field">
+        <label class="form-label" for="modal-telefon">Telefon</label>
+        <input 
+          class="form-input" 
+          type="tel" 
+          id="modal-telefon" 
+          name="telefon" 
+          placeholder="+387 61 123 456"
+        />
+      </div>
+      
+      <div class="form-field">
+        <label class="form-label" for="modal-poruka">Poruka *</label>
+        <textarea 
+          class="form-textarea" 
+          id="modal-poruka" 
+          name="poruka" 
+          required 
+          placeholder="Opišite vaš projekt ili upit..."
+        ></textarea>
+      </div>
+      
+      <button type="submit" class="btn-primary">Pošalji upit</button>
+    </form>
+  </div>
+</div>

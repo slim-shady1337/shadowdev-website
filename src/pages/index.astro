@@ -1,17 +1,162 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Početna">
+  <!-- HERO -->
+  <section class="hero">
+    <!-- Canvas pozadina -->
+    <canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+    
+    <div class="container-page hero-content">
+      <h1 class="hero-title">
+        <span>Shadow</span><span class="text-gradient">Dev</span>
+      </h1>
+      <p class="hero-subtitle">
+        Pravimo digitalnu budućnost — od ERP & MES sistema, modernih web stranica i mobilnih aplikacija, do marketinga koji gradi vaš brend.
+      </p>
+      <div class="hero-actions">
+        <a href="/usluge" class="btn-primary">Saznajte više</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- USLUGE -->
+<section class="section services-section">
+  <div class="container-page">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span>Šta </span><span class="text-gradient">radimo</span>
+      </h2>
+      <p class="section-subtitle">Prilagođena rješenja koja pokreću vaše poslovanje</p>
+    </div>
+
+    <div class="carousel">
+      <button class="carousel-btn carousel-btn-prev" data-carousel-prev aria-label="Prethodna kartica">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div class="carousel-viewport" id="services-viewport">
+        <div class="carousel-track">
+          <!-- Kartica 1 -->
+          <article class="service-card">
+            <div class="service-card-icon">🏭</div>
+            <h3 class="service-card-title">ERP rješenja</h3>
+            <p class="service-card-description">
+              Kompletna integracija poslovnih procesa i optimizacija proizvodnje u realnom vremenu.
+            </p>
+            <ul class="service-card-features">
+              <li>Upravljanje resursima i zalihama</li>
+              <li>Praćenje proizvodnje u realnom vremenu</li>
+              <li>Izvještaji i poslovna analitika</li>
+              <li>Prilagođeni moduli po potrebi</li>
+            </ul>
+            <a href="/usluge#erp" class="service-card-link">
+              Saznajte više
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </article>
+
+          <article class="service-card">
+            <div class="service-card-icon">🏭</div>
+            <h3 class="service-card-title">MES rješenja</h3>
+            <p class="service-card-description">
+              Kompletna integracija poslovnih procesa i optimizacija proizvodnje u realnom vremenu.
+            </p>
+            <ul class="service-card-features">
+              <li>Upravljanje resursima i zalihama</li>
+              <li>Praćenje proizvodnje u realnom vremenu</li>
+              <li>Izvještaji i poslovna analitika</li>
+              <li>Prilagođeni moduli po potrebi</li>
+            </ul>
+            <a href="/usluge#erp" class="service-card-link">
+              Saznajte više
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </article>
+
+          <!-- Kartica 2 -->
+          <article class="service-card">
+            <div class="service-card-icon">💻</div>
+            <h3 class="service-card-title">Web & App Development</h3>
+            <p class="service-card-description">
+              Moderne web stranice i mobilne aplikacije koje donose rezultate i zadovoljne korisnike.
+            </p>
+            <ul class="service-card-features">
+              <li>Web stranice i e-commerce platforme</li>
+              <li>Mobilne aplikacije (iOS & Android)</li>
+              <li>REST API i backend integracije</li>
+              <li>Cloud hosting i deployment</li>
+            </ul>
+            <a href="/usluge#web" class="service-card-link">
+              Saznajte više
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </article>
+
+          <!-- Kartica 3 -->
+          <article class="service-card">
+            <div class="service-card-icon">📱</div>
+            <h3 class="service-card-title">Digitalni Marketing</h3>
+            <p class="service-card-description">
+              Strategije koje grade vaš brend i donose mjerljive rezultate na digitalnim kanalima.
+            </p>
+            <ul class="service-card-features">
+              <li>Strategija društvenih mreža</li>
+              <li>SEO optimizacija i content marketing</li>
+              <li>Google & Meta oglašavanje</li>
+              <li>Analitika i mjesečni izvještaji</li>
+            </ul>
+            <a href="/usluge#marketing" class="service-card-link">
+              Saznajte više
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </article>
+        </div>
+      </div>
+
+      <button class="carousel-btn carousel-btn-next" data-carousel-next aria-label="Sljedeća kartica">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Dots -->
+    <div class="carousel-dots" id="services-dots"></div>
+  </div>
+</section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container-page">
+      <div class="cta-box">
+        <h2 class="cta-title">
+          Spremni za <span class="text-gradient">digitalnu</span> budućnost?
+        </h2>
+        <p class="cta-text">Zakažite besplatni sastanak i otkrijte kako možemo unaprijediti vaše poslovanje.</p>
+        <a href="/kontakt" class="btn-primary">Zakažite sastanak</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initHeroCanvas } from '../scripts/hero-canvas.js';
+  import { initServicesCarousel} from '../scripts/services-carousel.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    initHeroCanvas();
+    initServicesCarousel();
+  });
+</script>
