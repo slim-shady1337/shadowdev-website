@@ -1,0 +1,89 @@
+---
+import { nav, ui } from '../content/site';
+import { bi } from '../lib/bi';
+---
+
+<header class="nav" id="site-nav" data-nav-theme-root>
+  <div class="shell nav__inner">
+    <a class="nav__brand" href="#pocetak" aria-label={nav.home.bs} data-en-aria-label={nav.home.en}>
+      <img
+        class="nav__mark nav__on-iron"
+        src="/brand/mark-color.png"
+        width="26"
+        height="30"
+        alt=""
+        decoding="async"
+      />
+      <img
+        class="nav__word nav__on-iron"
+        src="/brand/word-color.png"
+        width="140"
+        height="13"
+        alt=""
+        decoding="async"
+      />
+      <img
+        class="nav__mark nav__on-paper"
+        src="/brand/mark-ink.png"
+        width="26"
+        height="30"
+        alt=""
+        decoding="async"
+      />
+      <img
+        class="nav__word nav__on-paper"
+        src="/brand/word-ink.png"
+        width="140"
+        height="13"
+        alt=""
+        decoding="async"
+      />
+    </a>
+
+    <nav class="nav__links" aria-label="Glavna navigacija" data-en-aria-label="Main navigation">
+      {nav.links.map((l) => (
+        <a class="nav__link" href={l.href} {...bi(l.label)}>{l.label.bs}</a>
+      ))}
+    </nav>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label={ui.lang.bs} data-en-aria-label={ui.lang.en}>
+        <button type="button" data-lang="bs" aria-pressed="true" lang="bs">BS</button>
+        <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+      </div>
+
+      <a class="btn nav__cta" href="#kontakt">
+        <span class="btn__face" {...bi(nav.cta)}>{nav.cta.bs}</span>
+      </a>
+
+      <button
+        class="menu-btn"
+        id="menu-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label={nav.menuOpen.bs}
+        data-en-aria-label={nav.menuOpen.en}
+      >
+        <svg class="is-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M3 7h18M3 12h18M3 17h18" stroke-linecap="square" />
+        </svg>
+        <svg class="is-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19" stroke-linecap="square" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+  {nav.links.map((l, i) => (
+    <a href={l.href} class="m-link">
+      <span class="m-link__label" {...bi(l.label)}>{l.label.bs}</span>
+      <span class="m-link__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+    </a>
+  ))}
+  <a class="btn" href="#kontakt">
+    <span class="btn__face" {...bi(nav.cta)}>{nav.cta.bs}</span>
+  </a>
+</div>

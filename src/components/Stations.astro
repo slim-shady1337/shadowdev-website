@@ -1,111 +1,32 @@
 ---
-// Šest stanica putovanja — svaka sa nazivom, 2 rečenice i jednom akcijom
-const stations = [
-  {
-    n: 1,
-    service: 'erp',
-    kindBs: 'ERP',
-    kindEn: 'ERP',
-    titleBs: 'Poslovni sistem',
-    titleEn: 'Business system',
-    p1Bs: 'Finansije, nabavka, skladište i kadrovi više ne žive u odvojenim tabelama. Jedan sistem drži podatke na jednom mjestu, pa izvještaj dobijete bez prepisivanja.',
-    p1En: 'Finance, procurement, warehouse and HR no longer live in separate tables. One system keeps the data in one place, so reports come without retyping.',
-    p2Bs: 'Kada se nešto promijeni, svi to vide odmah — bez čekanja na e-mail i bez dva različita stanja.',
-    p2En: 'When something changes, everyone sees it immediately — no waiting for email and no two different versions of the truth.'
-  },
-  {
-    n: 2,
-    service: 'mes',
-    kindBs: 'MES',
-    kindEn: 'MES',
-    titleBs: 'Proizvodnja',
-    titleEn: 'Production',
-    p1Bs: 'Radni nalozi, mašine i zalihe povezani su u jedan tok. Vidite gdje je posao zaglavio i koliko košta svaki sat zastoja.',
-    p1En: 'Work orders, machines and stock are connected in one flow. You see where work is stuck and what every hour of downtime costs.',
-    p2Bs: 'Izvještaji se pišu sami, iz podataka koje sistem već ima — bez šetanja po hali sa tabletom.',
-    p2En: 'Reports write themselves from data the system already has — no walking the floor with a clipboard.'
-  },
-  {
-    n: 3,
-    service: 'custom',
-    kindBs: 'Custom',
-    kindEn: 'Custom',
-    titleBs: 'Rješenja po mjeri',
-    titleEn: 'Custom solutions',
-    p1Bs: 'Povezujemo alate koje već koristite — računovodstvo, skladište, mašine, web. Tamo gdje ne postoji gotovo rješenje, gradimo ga.',
-    p1En: 'We connect the tools you already use — accounting, warehouse, machines, web. Where no off-the-shelf solution exists, we build it.',
-    p2Bs: 'Automatizujemo korake koji vam kradu vrijeme, a vi zadržavate kontrolu i podatke.',
-    p2En: 'We automate the steps that steal your time, while you keep control and ownership of the data.'
-  },
-  {
-    n: 4,
-    service: 'web',
-    kindBs: 'Web',
-    kindEn: 'Web',
-    titleBs: 'Web i web aplikacije',
-    titleEn: 'Websites & web apps',
-    p1Bs: 'Stranica ili web aplikacija koja radi na svakom uređaju i učitava se brzo. Jasna struktura, pristupačnost i mjerenje — da znate šta donosi rezultat.',
-    p1En: 'A website or web app that works on any device and loads fast. Clear structure, accessibility and measurement — so you know what delivers results.',
-    p2Bs: 'Povezujemo je sa sistemom iza, tako da sadržaj i podaci ne žive odvojeno.',
-    p2En: 'We connect it to the system behind, so content and data do not live apart.'
-  },
-  {
-    n: 5,
-    service: 'mobile',
-    kindBs: 'Mobile',
-    kindEn: 'Mobile',
-    titleBs: 'Mobilne aplikacije',
-    titleEn: 'Mobile apps',
-    p1Bs: 'Aplikacija za iOS i Android, povezana sa vašim podacima. Terenski radnici, skladište i prodaja imaju ono što im treba — u džepu.',
-    p1En: 'An iOS and Android app connected to your data. Field staff, warehouse and sales have what they need — in their pocket.',
-    p2Bs: 'Bez dupliranja unosa i bez papira koji se gubi između dvije smjene.',
-    p2En: 'No double entry and no paper lost between two shifts.'
-  },
-  {
-    n: 6,
-    service: 'marketing',
-    kindBs: 'Marketing',
-    kindEn: 'Marketing',
-    titleBs: 'Digitalni marketing',
-    titleEn: 'Digital marketing',
-    p1Bs: 'Vidljivost, kampanje i mjerenje na jednom mjestu. Ne trošimo budžet naslijepo: pratimo šta donosi upite i prodaju.',
-    p1En: 'Visibility, campaigns and measurement in one place. We do not spend budget blindly: we track what brings inquiries and sales.',
-    p2Bs: 'Tako sistem koji ste izgradili ne ostaje najbolje čuvana tajna.',
-    p2En: 'So the system you built does not remain your best-kept secret.'
-  }
-];
+import { nav, stations } from '../content/site';
+import { bi } from '../lib/bi';
 ---
 
 {stations.map((s) => (
   <section
-    class:list={['station', s.n % 2 === 0 ? 'station--right' : '']}
+    class="station"
     id={`stanica-${s.n}`}
     data-station={s.n}
+    aria-labelledby={`station-title-${s.n}`}
   >
-    <div class="shell">
-      <div class="station-inner">
-        <div class="station-plate">
-          <div class="station-rule">
-            <span class="r-count">{String(s.n).padStart(2, '0')} / 06</span>
-            <span class="r-line"></span>
-          </div>
+    <div class="shell station__grid">
+      <div class="station__body">
+        <div class="station__index">
+          <span class="station__num">{String(s.n).padStart(2, '0')}</span>
+          <span class="station__kind" {...bi(s.kind)}>{s.kind.bs}</span>
+        </div>
 
-          <div class="station-head">
-            <span class="station-index">{String(s.n).padStart(2, '0')}</span>
-            <span class="station-kind" data-bs={s.kindBs} data-en={s.kindEn}>{s.kindBs}</span>
-          </div>
-
-          <h2 data-bs={s.titleBs} data-en={s.titleEn}>{s.titleBs}</h2>
-          <p data-bs={s.p1Bs} data-en={s.p1En}>{s.p1Bs}</p>
-          <p data-bs={s.p2Bs} data-en={s.p2En}>{s.p2Bs}</p>
-
-          <a
-            href="#kontakt"
-            class="station-action"
-            data-service={s.service}
-            data-bs="Zakaži razgovor"
-            data-en="Book a call"
-          >Zakaži razgovor</a>
+        <div class="station__copy">
+          <h2 id={`station-title-${s.n}`} class="u-display station__title" {...bi(s.title)}>
+            {s.title.bs}
+          </h2>
+          <p class="station__lead" {...bi(s.lead)}>{s.lead.bs}</p>
+          <p class="station__text" {...bi(s.body)}>{s.body.bs}</p>
+          <p class="station__terms" {...bi(s.terms)}>{s.terms.bs}</p>
+          <a class="btn btn--ghost station__action" href={s.href}>
+            <span class="btn__face" {...bi(nav.cta)}>{nav.cta.bs}</span>
+          </a>
         </div>
       </div>
     </div>

@@ -1,0 +1,1 @@
+Origin: derived, not generated. Trimmed and re-encoded from the client-supplied lockup public/logo.png by qa/build-assets.mjs (headless Chrome canvas: alpha-based band detection, tight trim, transparent ground). No image model, no stock. Regenerate with: node qa/build-assets.mjs

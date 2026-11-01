@@ -1,0 +1,1 @@
+Origin: derived, not generated. Downscaled from the client-supplied mark (public/brand/mark-color.png) by qa/make-icons.mjs in headless Chrome with high-quality resampling. No image model, no stock. Regenerate with: node qa/make-icons.mjs

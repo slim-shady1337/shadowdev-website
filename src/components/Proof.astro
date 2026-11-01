@@ -1,0 +1,43 @@
+---
+import { proof } from '../content/site';
+import { bi } from '../lib/bi';
+---
+
+<section class="band" id="reference" aria-labelledby="proof-title">
+  <div class="shell band__inner">
+    <div class="head">
+      <h2 id="proof-title" class="u-display" {...bi(proof.h2)}>{proof.h2.bs}</h2>
+      <p class="u-lead" {...bi(proof.lead)}>{proof.lead.bs}</p>
+    </div>
+
+    <div class="proof__cards">
+      {proof.cards.map((card) => (
+        <article class="proof__card" aria-label={proof.placeholder.bs}>
+          <div class="proof__face">
+            <div class="proof__meta">
+              <span class="tag" {...bi(proof.placeholder)}>{proof.placeholder.bs}</span>
+              <span class="u-micro" {...bi(card.sector)}>{card.sector.bs}</span>
+            </div>
+            <h3 class="proof__title" {...bi(card.title)}>{card.title.bs}</h3>
+            <p class="proof__text" {...bi(card.text)}>{card.text.bs}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="proof__figures">
+      {proof.figures.map((fig) => (
+        <div class="proof__figure">
+          <span class="proof__value" aria-hidden="true">—</span>
+          <span class="proof__label" {...bi(fig.label)}>{fig.label.bs}</span>
+          <span class="tag" {...bi(proof.placeholder)}>{proof.placeholder.bs}</span>
+        </div>
+      ))}
+    </div>
+
+    <p class="proof__note">
+      <span class="mark-square" aria-hidden="true"></span>
+      <span {...bi(proof.note)}>{proof.note.bs}</span>
+    </p>
+  </div>
+</section>

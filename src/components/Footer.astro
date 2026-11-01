@@ -1,0 +1,46 @@
+---
+import { footer, nav, stations, contact, ui } from '../content/site';
+import { bi } from '../lib/bi';
+---
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="footer__signature" href="#pocetak" aria-label="ShadowDev">
+          <img class="footer__mark" src="/brand/mark-color.png" width="34" height="40" alt="" loading="lazy" decoding="async" />
+          <img class="footer__word" src="/brand/word-color.png" width="172" height="16" alt="ShadowDev" loading="lazy" decoding="async" />
+        </a>
+        <p class="footer__tagline" {...bi(footer.tagline)}>{footer.tagline.bs}</p>
+      </div>
+
+      <div class="footer__col">
+        <h3 {...bi(footer.services)}>{footer.services.bs}</h3>
+        {stations.map((s) => (
+          <a href={`#stanica-${s.n}`} {...bi(s.title)}>{s.title.bs}</a>
+        ))}
+      </div>
+
+      <div class="footer__col">
+        <h3 {...bi(footer.contactTitle)}>{footer.contactTitle.bs}</h3>
+        <a href="mailto:kontakt@shadowdev.ba">kontakt@shadowdev.ba</a>
+        <a href="tel:+38761000000">+387 61 000 000</a>
+        <a href="#kontakt" {...bi(nav.cta)}>{nav.cta.bs}</a>
+      </div>
+
+      <div class="footer__col">
+        <h3 {...bi(footer.assembly)}>{footer.assembly.bs}</h3>
+        <a href="#pocetak" {...bi(nav.links[0].label)}>{nav.links[0].label.bs}</a>
+        <a href="#proces" {...bi(nav.links[1].label)}>{nav.links[1].label.bs}</a>
+        <a href="#sigurnost" {...bi(nav.links[2].label)}>{nav.links[2].label.bs}</a>
+        <a href="#reference" {...bi(nav.links[3].label)}>{nav.links[3].label.bs}</a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <span {...bi(footer.rights)}>{footer.rights.bs}</span>
+      <span {...bi(footer.place)}>{footer.place.bs}</span>
+      <a class="link" href="#pocetak" {...bi(footer.top)}>{footer.top.bs}</a>
+    </div>
+  </div>
+</footer>

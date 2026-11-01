@@ -1,0 +1,35 @@
+---
+import { legend, stations } from '../content/site';
+import { bi } from '../lib/bi';
+---
+
+<section class="legend" id="sistem" aria-labelledby="legend-title">
+  <div class="shell">
+    <div class="legend__grid">
+      <h2 id="legend-title" class="u-display legend__title" {...bi(legend.h2)}>{legend.h2.bs}</h2>
+
+      <div class="legend__body">
+        <p {...bi(legend.p1)}>{legend.p1.bs}</p>
+        <p {...bi(legend.p2)}>{legend.p2.bs}</p>
+      </div>
+    </div>
+
+    <div class="legend__index">
+      <div class="legend__index-head">
+        <span class="u-micro" {...bi(legend.indexTitle)}>{legend.indexTitle.bs}</span>
+        <span class="u-micro" {...bi(legend.indexNote)}>{legend.indexNote.bs}</span>
+      </div>
+
+      <nav aria-label={legend.indexTitle.bs} data-en-aria-label={legend.indexTitle.en}>
+        {stations.map((s) => (
+          <a class="index__row" href={`#stanica-${s.n}`}>
+            <span class="index__code">{s.code}</span>
+            <span class="index__name" {...bi(s.title)}>{s.title.bs}</span>
+            <span class="index__spec" {...bi(s.spec)}>{s.spec.bs}</span>
+            <span class="index__tick" aria-hidden="true"></span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</section>

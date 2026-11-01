@@ -18,9 +18,9 @@ const errors = [];
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
 page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message));
 
-await page.goto(url, { waitUntil: 'networkidle0', timeout: 90000 });
+await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
 try { await page.evaluate(() => document.fonts.ready); } catch {}
-await new Promise((r) => setTimeout(r, 700));
+await new Promise((r) => setTimeout(r, Number(full === '1' ? 1500 : 1100)));
 
 fs.mkdirSync(path.dirname(out), { recursive: true });
 await page.screenshot({ path: out, fullPage: full === '1' });

@@ -1,0 +1,1 @@
+Origin: client-supplied brand asset, pre-existing. The ShadowDev lockup (orange hexagonal monogram, wide squared wordmark, "ONE FOR ALL" line) on a transparent ground, as delivered to this project. Not generated here; preserved unmodified as the source of every derived asset in public/brand, public/favicon-*.png and public/og.png.

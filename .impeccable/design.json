@@ -1,0 +1,64 @@
+{
+  "name": "ShadowDev",
+  "version": 1,
+  "world": "foundry — heat where work happens, vellum where it is delivered",
+  "colors": {
+    "tmina": { "value": "#0b0d0e", "role": "ground" },
+    "grafit": { "value": "#15191b", "role": "raised surface" },
+    "grafit-2": { "value": "#1c2123", "role": "plate on plate" },
+    "celik": { "value": "#8c9298", "role": "secondary on iron" },
+    "hartija": { "value": "#ecede8", "role": "cooled vellum" },
+    "jezgro": { "value": "#ff5e1f", "role": "primary / live work" },
+    "zar": { "value": "#ff9911", "role": "secondary / hottest edge" },
+    "tekst-d": { "value": "#d9dcd6", "role": "reading text on iron" },
+    "tinta": { "value": "#0b0d0e", "role": "ink on vellum" },
+    "celik-tinta": { "value": "#525a5e", "role": "secondary on vellum" },
+    "greska": { "value": "#a3210d", "role": "form error, vellum only" }
+  },
+  "typography": {
+    "display": { "family": "Anybody", "weight": 760, "stretch": "116%", "transform": "uppercase", "lineHeight": 0.88, "letterSpacing": "-0.012em" },
+    "text": { "family": "Archivo", "weight": 400, "size": "17px", "lineHeight": 1.62 },
+    "code": { "family": "Martian Mono", "weight": 500, "size": "11px", "letterSpacing": "0.14em", "transform": "uppercase" },
+    "scale": {
+      "hero": "clamp(2.55rem, 5.1vw, 4.5rem)",
+      "h2": "clamp(1.85rem, 3.15vw, 2.9rem)",
+      "lead": "clamp(1.05rem, 1.15vw, 1.28rem)",
+      "body": "1.0625rem",
+      "small": "0.875rem",
+      "micro": "0.6875rem"
+    }
+  },
+  "space": {
+    "gutter": "clamp(14px, 1.5vw, 22px)",
+    "page": "clamp(20px, 4.2vw, 68px)",
+    "maxWidth": "1560px",
+    "steps": ["clamp(0.5rem, 0.7vw, 0.75rem)", "clamp(1rem, 1.4vw, 1.5rem)", "clamp(1.75rem, 2.6vw, 2.75rem)", "clamp(2.75rem, 4.6vw, 5rem)", "clamp(4rem, 8vw, 9rem)"]
+  },
+  "shape": {
+    "radius": "0",
+    "chamfer": "14px",
+    "chamferSmall": "8px",
+    "rule": "1px"
+  },
+  "motion": {
+    "ease": "cubic-bezier(0.22, 0.68, 0.16, 1)",
+    "easeOut": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "durations": ["140ms", "260ms", "520ms"],
+    "signature": "scroll-driven camera flight along one axis; parts arrive with their section and cool out before the core"
+  },
+  "contrast": {
+    "jezgro-on-tmina": 6.37,
+    "celik-on-tmina": 6.49,
+    "tinta-on-hartija": 15.8,
+    "celik-tinta-on-hartija": 5.82,
+    "tinta-on-jezgro": 5.81
+  },
+  "files": {
+    "tokens": "src/styles/tokens.css",
+    "base": "src/styles/base.css",
+    "sections": "src/styles/sections.css",
+    "journey": "src/styles/journey.css",
+    "scene": "src/three/world.ts",
+    "copy": "src/content/site.ts"
+  }
+}

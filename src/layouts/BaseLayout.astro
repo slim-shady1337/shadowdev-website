@@ -1,19 +1,17 @@
 ---
-import '../styles/system.css';
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/sections.css';
 import '../styles/journey.css';
 
-export interface Props {
-  title: string;
-  description?: string;
-}
-
-const {
-  title,
-  description =
-    'ShadowDev gradi ERP, MES i softver po mjeri koji povezuje cijelu firmu — plus web stranice, mobilne aplikacije i digitalni marketing. OneForAll.'
-} = Astro.props;
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { meta, nav, hero, convergence } from '../content/site';
 
 const siteUrl = 'https://shadowdev.ba/';
+const title = meta.title.bs;
+const description = meta.description.bs;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -21,184 +19,136 @@ const jsonLd = {
   name: 'ShadowDev',
   slogan: 'OneForAll',
   url: siteUrl,
-  email: 'info@shadowdev.ba',
+  logo: `${siteUrl}brand/lockup-color.png`,
+  image: `${siteUrl}og.png`,
+  email: 'kontakt@shadowdev.ba',
   telephone: '+38761000000',
-  description:
-    'ERP i MES sistemi, softver po mjeri, web stranice, mobilne aplikacije i digitalni marketing.',
-  areaServed: 'BA',
+  description,
+  areaServed: { '@type': 'Country', name: 'Bosnia and Herzegovina' },
   knowsAbout: [
-    'ERP',
-    'MES',
+    'ERP sistemi',
+    'MES — praćenje proizvodnje',
     'Softver po mjeri',
-    'Web razvoj',
+    'Integracije i API',
+    'Web stranice i web aplikacije',
     'Mobilne aplikacije',
     'Digitalni marketing'
   ]
 };
 ---
 
-<!DOCTYPE html>
-<html lang="bs">
+<!doctype html>
+<html
+  lang="bs"
+  data-title-bs={meta.title.bs}
+  data-title-en={meta.title.en}
+  data-desc-bs={meta.description.bs}
+  data-desc-en={meta.description.en}
+>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
-    <title>{title} — ShadowDev</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={siteUrl} />
-    <meta name="theme-color" content="#060609" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0b0d0e" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
+
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/anybody-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/anybody-latin-ext.woff2" crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="ShadowDev" />
-    <meta property="og:title" content={`${title} — ShadowDev`} />
+    <meta property="og:locale" content="bs_BA" />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={siteUrl} />
-    <meta property="og:image" content={`${siteUrl}og.jpg`} />
+    <meta property="og:image" content={`${siteUrl}og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ShadowDev — OneForAll" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} — ShadowDev`} />
+    <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="twitter:image" content={`${siteUrl}og.png`} />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <script is:inline>
       (function () {
-        document.documentElement.classList.add('js');
-        var stored = localStorage.getItem('lang');
-        if (stored === 'en') document.documentElement.setAttribute('lang', 'en');
+        var d = document.documentElement;
+        d.classList.add('js');
+        try {
+          if (localStorage.getItem('sd-lang') === 'en') d.lang = 'en';
+        } catch (e) {}
+        var reduce = false;
+        try {
+          reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        } catch (e) {}
+        if (reduce) {
+          d.classList.add('reduced', 'no-3d');
+          return;
+        }
+        try {
+          var c = document.createElement('canvas');
+          var gl = c.getContext('webgl2') || c.getContext('webgl');
+          if (!gl) {
+            d.classList.add('no-3d');
+          } else {
+            var lose = gl.getExtension('WEBGL_lose_context');
+            if (lose) lose.loseContext();
+          }
+        } catch (e) {
+          d.classList.add('no-3d');
+        }
       })();
     </script>
   </head>
+
   <body>
-    <a class="skip" href="#main" data-bs="Preskoči na sadržaj" data-en="Skip to content">Preskoči na sadržaj</a>
+    <a class="skip" href="#main" data-bs={nav.skip.bs} data-en={nav.skip.en}>{nav.skip.bs}</a>
 
-    <!-- 3D world (fixed, behind content) -->
-    <div class="world" id="world" aria-hidden="true">
-      <canvas class="world-canvas" id="world-canvas"></canvas>
+    <div class="field" aria-hidden="true"></div>
+    <div class="world" aria-hidden="true">
+      <canvas id="world-canvas"></canvas>
     </div>
 
-    <!-- NAV -->
-    <header class="site-nav" id="site-nav">
-      <div class="nav-inner">
-        <a href="#pocetak" class="nav-brand" aria-label="ShadowDev — početak">
-          <img src="/logo.png" alt="" />
-          <span class="brand-word">ShadowDev</span>
-          <span class="brand-tag">ONEFORALL</span>
-        </a>
-
-        <nav class="nav-links" aria-label="Glavna navigacija">
-          <a href="#stanica-1" class="nav-link" data-bs="Sistem" data-en="System">Sistem</a>
-          <a href="#proces" class="nav-link" data-bs="Kako radimo" data-en="How we work">Kako radimo</a>
-          <a href="#sigurnost" class="nav-link" data-bs="Sigurnost" data-en="Security">Sigurnost</a>
-          <a href="#reference" class="nav-link" data-bs="Reference" data-en="Work">Reference</a>
-          <a href="#kontakt" class="nav-link" data-bs="Kontakt" data-en="Contact">Kontakt</a>
-        </nav>
-
-        <div class="nav-actions">
-          <div class="lang" role="group" aria-label="Jezik / Language">
-            <button type="button" data-lang="bs" aria-pressed="true">BS</button>
-            <button type="button" data-lang="en" aria-pressed="false">EN</button>
-          </div>
-          <a href="#kontakt" class="btn nav-cta" data-bs="Zakaži razgovor" data-en="Book a call">Zakaži razgovor</a>
-          <button class="menu-btn" id="menu-btn" aria-label="Otvori meni" aria-expanded="false" aria-controls="mobile-menu">
-            <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-            <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-      <a href="#stanica-1" class="m-link" data-bs="Sistem" data-en="System">Sistem</a>
-      <a href="#proces" class="m-link" data-bs="Kako radimo" data-en="How we work">Kako radimo</a>
-      <a href="#sigurnost" class="m-link" data-bs="Sigurnost" data-en="Security">Sigurnost</a>
-      <a href="#reference" class="m-link" data-bs="Reference" data-en="Work">Reference</a>
-      <a href="#kontakt" class="m-link" data-bs="Kontakt" data-en="Contact">Kontakt</a>
-      <div class="m-foot">
-        <a href="#kontakt" class="btn" data-bs="Zakaži razgovor" data-en="Book a call">Zakaži razgovor</a>
-      </div>
-    </div>
-
-    <!-- STATION RAIL -->
-    <nav class="rail" aria-label="Stanice putovanja">
-      <span class="rail-label">ONE · FOR · ALL</span>
-      <span class="rail-track"><i class="rail-fill" id="rail-fill"></i></span>
-      <ol class="rail-list">
-        <li><a href="#stanica-1" data-rail="1">01</a></li>
-        <li><a href="#stanica-2" data-rail="2">02</a></li>
-        <li><a href="#stanica-3" data-rail="3">03</a></li>
-        <li><a href="#stanica-4" data-rail="4">04</a></li>
-        <li><a href="#stanica-5" data-rail="5">05</a></li>
-        <li><a href="#stanica-6" data-rail="6">06</a></li>
-      </ol>
-    </nav>
-
-    <!-- TELEMETRY -->
-    <div class="telemetry" aria-hidden="true">
-      <span>DEPTH</span>
-      <span class="tele-bar"><i id="tele-bar"></i></span>
-      <span class="tele-value" id="tele-value">000</span>
-      <span class="tele-station" id="tele-station">00 / START</span>
-    </div>
+    <Nav />
 
     <main id="main">
-      <slot />
+      <div id="journey">
+        <slot name="journey" />
+      </div>
+
+      <div class="after" data-bg="paper">
+        <slot />
+      </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-      <div class="shell footer-inner">
-        <div class="footer-top">
-          <div>
-            <a href="#pocetak" class="footer-brand">
-              <img src="/logo.png" alt="" />
-              <span class="fw">ShadowDev</span>
-            </a>
-            <span class="footer-slogan">ONEFORALL</span>
-            <p class="footer-note" data-bs="Jedan partner, jedan sistem, sve povezano." data-en="One partner, one system, everything connected.">Jedan partner, jedan sistem, sve povezano.</p>
-          </div>
-          <div class="footer-col">
-            <h4 data-bs="Usluge" data-en="Services">Usluge</h4>
-            <ul>
-              <li><a href="#stanica-1" data-bs="ERP sistem" data-en="ERP system">ERP sistem</a></li>
-              <li><a href="#stanica-2" data-bs="MES proizvodnja" data-en="MES production">MES proizvodnja</a></li>
-              <li><a href="#stanica-3" data-bs="Softver po mjeri" data-en="Custom software">Softver po mjeri</a></li>
-              <li><a href="#stanica-4" data-bs="Web i aplikacije" data-en="Web & apps">Web i aplikacije</a></li>
-              <li><a href="#stanica-5" data-bs="Mobilne aplikacije" data-en="Mobile apps">Mobilne aplikacije</a></li>
-              <li><a href="#stanica-6" data-bs="Digitalni marketing" data-en="Digital marketing">Digitalni marketing</a></li>
-            </ul>
-          </div>
-          <div class="footer-col">
-            <h4 data-bs="Kontakt" data-en="Contact">Kontakt</h4>
-            <ul>
-              <li><a href="mailto:info@shadowdev.ba">info@shadowdev.ba</a></li>
-              <li><a href="tel:+38761000000">+387 61 000 000</a></li>
-              <li><a href="#kontakt" data-bs="Pošalji upit" data-en="Send an inquiry">Pošalji upit</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <span>© 2026 ShadowDev</span>
-          <span data-bs="Sarajevo, Bosna i Hercegovina" data-en="Sarajevo, Bosnia and Herzegovina">Sarajevo, Bosna i Hercegovina</span>
-          <a href="#pocetak" data-bs="Na vrh ↑" data-en="Back to top ↑">Na vrh ↑</a>
-        </div>
-      </div>
-    </footer>
+    <Footer />
+
+    <div class="dimrule" aria-hidden="true">
+      <span class="dimrule__label">
+        <span data-bs="Sklop" data-en="Assembly">Sklop</span>
+        <b id="dimrule-value">00</b>
+        <span>/ 06</span>
+      </span>
+      <span class="dimrule__track">
+        <i class="dimrule__line"></i>
+        <i class="dimrule__fill"></i>
+        <i class="dimrule__head"></i>
+      </span>
+      <span class="dimrule__label" id="dimrule-name">Početak</span>
+    </div>
 
     <script>
-      import { boot } from '../scripts/app.js';
-      boot();
+      import '../scripts/main';
     </script>
   </body>
 </html>

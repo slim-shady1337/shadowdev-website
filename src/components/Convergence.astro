@@ -1,57 +1,91 @@
 ---
-// Spajanje — dijagram koji pokazuje kako se stanice vežu u jedno jezgro
+import { convergence } from '../content/site';
+import { bi } from '../lib/bi';
+
+const nodes = [
+  { id: 'erp', x: 330, y: 60, tx: 330, ty: 196, ax: 'middle', lx: 330, ly: 46 },
+  { id: 'mes', x: 494.5, y: 155, tx: 376.8, ty: 223, ax: 'start', lx: 512, ly: 150 },
+  { id: 'custom', x: 494.5, y: 345, tx: 376.8, ty: 277, ax: 'start', lx: 512, ly: 350 },
+  { id: 'web', x: 330, y: 440, tx: 330, ty: 304, ax: 'middle', lx: 330, ly: 466 },
+  { id: 'mobile', x: 165.5, y: 345, tx: 283.2, ty: 277, ax: 'end', lx: 148, ly: 350 },
+  { id: 'marketing', x: 165.5, y: 155, tx: 283.2, ty: 223, ax: 'end', lx: 148, ly: 150 }
+] as const;
+
+const corePath = 'M330 196 L376.8 223 L376.8 277 L330 304 L283.2 277 L283.2 223 Z';
 ---
 
-<section class="convergence" id="spajanje">
-  <div class="shell">
-    <div class="convergence-grid">
-      <div>
-        <h2 data-bs="Sve se spaja u jedno." data-en="Everything merges into one.">Sve se spaja u jedno.</h2>
-        <p data-bs="Šest stanica nije šest odvojenih usluga. To su dijelovi istog sistema — i zato ih gradimo zajedno, sa istim podacima i istim pravilima." data-en="The six stations are not six separate services. They are parts of the same system — which is why we build them together, with the same data and the same rules.">
-          Šest stanica nije šest odvojenih usluga. To su dijelovi istog sistema — i zato ih gradimo zajedno, sa istim podacima i istim pravilima.
-        </p>
-        <span class="conv-quote" data-bs="OneForAll: jedan partner, jedan sistem, sve povezano." data-en="OneForAll: one partner, one system, everything connected.">OneForAll: jedan partner, jedan sistem, sve povezano.</span>
-      </div>
-
-      <div>
-        <svg class="system-map" viewBox="0 0 560 560" role="img" aria-labelledby="map-title map-desc">
-          <title id="map-title">OneForAll sistem</title>
-          <desc id="map-desc">Šest usluga — ERP, MES, softver po mjeri, web, mobilne aplikacije i marketing — povezano u jedno jezgro.</desc>
-
-          <circle class="map-core-glow" cx="280" cy="280" r="92" fill="var(--ember)" opacity="0.08" />
-          <circle class="map-core-ring" cx="280" cy="280" r="58" fill="none" stroke="var(--line-2)" />
-          <circle class="map-core" cx="280" cy="280" r="18" />
-
-          <g stroke-width="1">
-            <line class="map-edge" x1="280" y1="90" x2="280" y2="280" />
-            <line class="map-edge" x1="445" y1="185" x2="280" y2="280" />
-            <line class="map-edge" x1="445" y1="375" x2="280" y2="280" />
-            <line class="map-edge map-edge--live" x1="280" y1="470" x2="280" y2="280" />
-            <line class="map-edge" x1="115" y1="375" x2="280" y2="280" />
-            <line class="map-edge" x1="115" y1="185" x2="280" y2="280" />
-          </g>
-
-          <g>
-            <circle class="map-node" cx="280" cy="90" r="7" />
-            <text class="map-label" x="280" y="70" text-anchor="middle">ERP</text>
-
-            <circle class="map-node" cx="445" cy="185" r="7" />
-            <text class="map-label" x="460" y="180" text-anchor="start">MES</text>
-
-            <circle class="map-node" cx="445" cy="375" r="7" />
-            <text class="map-label" x="460" y="395" text-anchor="start">Custom</text>
-
-            <circle class="map-node" cx="280" cy="470" r="7" />
-            <text class="map-label" x="280" y="496" text-anchor="middle">Web</text>
-
-            <circle class="map-node" cx="115" cy="375" r="7" />
-            <text class="map-label" x="100" y="395" text-anchor="end">Mobile</text>
-
-            <circle class="map-node" cx="115" cy="185" r="7" />
-            <text class="map-label" x="100" y="180" text-anchor="end">Marketing</text>
-          </g>
-        </svg>
-      </div>
+<section class="converge" id="spajanje" aria-labelledby="converge-title">
+  <div class="shell converge__grid">
+    <div class="converge__copy">
+      <h2 id="converge-title" class="u-display converge__title" {...bi(convergence.h2)}>
+        {convergence.h2.bs}
+      </h2>
+      <p class="converge__text" {...bi(convergence.lead)}>{convergence.lead.bs}</p>
+      <p class="converge__caption" {...bi(convergence.caption)}>{convergence.caption.bs}</p>
     </div>
+
+    <figure class="converge__figure">
+      <svg
+        class="diagram"
+        id="system-diagram"
+        viewBox="0 0 660 500"
+        role="img"
+        aria-labelledby="diagram-title diagram-desc"
+      >
+        <title id="diagram-title">{convergence.h2.bs}</title>
+        <desc id="diagram-desc">
+          {convergence.lead.bs}
+        </desc>
+
+        <!-- sheet boundary -->
+        <polygon
+          points="330,26 523.4,138 523.4,362 330,474 136.6,362 136.6,138"
+          fill="none"
+          stroke="rgba(236,237,232,0.09)"
+          stroke-width="1"
+          stroke-dasharray="2 7"
+        />
+
+        <!-- leaders, drawn once when the section arrives -->
+        {nodes.map((n) => (
+          <line
+            class="d-line d-draw"
+            style="--len:136"
+            x1={n.x}
+            y1={n.y}
+            x2={n.tx}
+            y2={n.ty}
+          />
+        ))}
+
+        <!-- nodes -->
+        {nodes.map((n) => (
+          <g>
+            <rect class="d-node" x={n.x - 3.5} y={n.y - 3.5} width="7" height="7" />
+            <text
+              x={n.lx}
+              y={n.ly}
+              text-anchor={n.ax}
+              class="d-label-strong"
+              {...bi(convergence.labels[n.id as keyof typeof convergence.labels])}
+            >
+              {convergence.labels[n.id as keyof typeof convergence.labels].bs}
+            </text>
+          </g>
+        ))}
+
+        <!-- the core -->
+        <path class="d-core" d={corePath} />
+        <path
+          class="d-heat"
+          d={corePath}
+          transform="translate(330 250) scale(1.55) translate(-330 -250)"
+          opacity="0.32"
+        />
+        <text x="330" y="253" text-anchor="middle" fill="#0b0d0e" style="fill:#0b0d0e;font-weight:600">
+          {convergence.core.bs}
+        </text>
+      </svg>
+    </figure>
   </div>
 </section>

@@ -3,6 +3,13 @@ dist/
 # generated types
 .astro/
 
+# local package cache and QA artefacts
+.npm-cache/
+qa/out/
+qa/asset-check/
+qa/fonts-local.css
+.impeccable/review/
+
 # dependencies
 node_modules/
 

@@ -1,28 +1,80 @@
 ---
-// Hero — početak putovanja
+import { hero } from '../content/site';
+import { bi } from '../lib/bi';
 ---
 
-<section class="hero" id="pocetak">
-  <div class="shell hero-inner">
-    <div class="hero-meta">
-      <span class="mono">SHADOWDEV</span>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="mono" style="color: var(--ember);">ONEFORALL</span>
+<section class="hero" id="pocetak" aria-labelledby="hero-title">
+  <!-- Static still of the same six artifacts, for visitors without WebGL or
+       with reduced motion. Decorative: the same story is in the copy. -->
+  <svg class="hero__still" viewBox="0 0 1000 470" aria-hidden="true" focusable="false">
+    <g fill="none" stroke-linecap="square">
+      <g transform="translate(20 130) rotate(-7)">
+        <rect class="s-plate" width="150" height="172" />
+        <path class="s-line" d="M18 146V24M18 146h116" />
+        <rect class="s-hot" x="26" y="112" width="9" height="34" />
+        <rect class="s-dim" x="41" y="92" width="9" height="54" />
+        <rect class="s-dim" x="56" y="120" width="9" height="26" />
+        <rect class="s-dim" x="71" y="74" width="9" height="72" />
+        <rect class="s-hot" x="86" y="60" width="9" height="86" />
+        <rect class="s-dim" x="101" y="98" width="9" height="48" />
+        <rect class="s-hot" x="116" y="44" width="9" height="102" />
+      </g>
+
+      <g transform="translate(205 36) rotate(5)">
+        <rect class="s-plate" width="120" height="172" />
+        <rect class="s-hot" width="120" height="5" />
+        <path class="s-line" d="M22 62v70M27 62v70M31 62v70M37 62v70M42 62v70M48 62v70M53 62v70M59 62v70M64 62v70M70 62v70M75 62v70M81 62v70M86 62v70M92 62v70" />
+        <path class="s-line" d="M20 148h80M20 158h56M20 168h68" stroke="rgba(140,146,152,.32)" />
+      </g>
+
+      <g transform="translate(358 158) rotate(-4)">
+        <rect class="s-plate" width="200" height="140" />
+        <rect class="s-tint" x="0" y="0" width="200" height="26" />
+        <path class="s-line" d="M0 26h200M0 52h200M0 78h200M0 104h200M40 0v140M80 0v140M120 0v140M160 0v140" />
+        <rect class="s-hot" x="82" y="55" width="36" height="21" />
+        <rect class="s-hot" x="162" y="107" width="36" height="21" />
+      </g>
+
+      <g transform="translate(600 22) rotate(7)">
+        <rect class="s-plate" x="0" y="0" width="90" height="172" rx="12" />
+        <rect class="s-hot" x="12" y="34" width="66" height="14" />
+        <path class="s-line" d="M12 66h66M12 84h48M12 102h60M12 120h40" />
+        <rect class="s-hot" x="12" y="140" width="66" height="16" />
+      </g>
+
+      <g transform="translate(718 150) rotate(-5)">
+        <rect class="s-plate" width="190" height="140" />
+        <rect class="s-tint" width="190" height="22" />
+        <path class="s-line" d="M34 11h1M46 11h1M58 11h1" />
+        <rect class="s-tint" x="14" y="38" width="162" height="52" />
+        <path class="s-line" d="M14 104h96M14 116h70" />
+        <rect class="s-hot" x="14" y="124" width="46" height="10" />
+      </g>
+
+      <g transform="translate(878 22) rotate(4)">
+        <rect class="s-plate" width="104" height="104" />
+        <circle class="s-line" cx="52" cy="52" r="20" />
+        <circle class="s-line" cx="52" cy="52" r="34" />
+        <circle class="s-hot" cx="52" cy="52" r="4" stroke="none" />
+      </g>
+    </g>
+  </svg>
+
+  <div class="shell hero__grid">
+    <div class="hero__copy">
+      <h1 id="hero-title" class="u-display hero__title" {...bi(hero.h1)}>{hero.h1.bs}</h1>
+      <p class="hero__lead" {...bi(hero.lead)}>{hero.lead.bs}</p>
+      <div class="hero__actions">
+        <a class="btn" href="#kontakt">
+          <span class="btn__face" {...bi(hero.cta)}>{hero.cta.bs}</span>
+        </a>
+        <a class="link hero__secondary" href="#sistem" {...bi(hero.secondary)}>{hero.secondary.bs}</a>
+      </div>
     </div>
 
-    <h1 class="hero-title">
-      <span class="line" data-bs="Jedan sistem." data-en="One system.">Jedan sistem.</span>
-      <span class="line line--offset" data-bs="Cijela firma." data-en="The whole company.">Cijela firma.</span>
-    </h1>
-
-    <div class="hero-lower">
-      <p class="hero-lead" data-bs="ShadowDev gradi ERP, MES i softver po mjeri koji povezuje finansije, proizvodnju i prodaju — i web, mobilne aplikacije i marketing koji taj sistem čine vidljivim." data-en="ShadowDev builds ERP, MES and custom software that connects finance, production and sales — plus web, mobile apps and marketing that make the system visible.">
-        ShadowDev gradi ERP, MES i softver po mjeri koji povezuje finansije, proizvodnju i prodaju — i web, mobilne aplikacije i marketing koji taj sistem čine vidljivim.
-      </p>
-
-      <div class="hero-cta">
-        <a href="#stanica-1" class="btn" data-bs="Uđi u sistem" data-en="Enter the system">Uđi u sistem</a>
-      </div>
+    <div class="hero__plate">
+      <span class="hero__plate-label">{hero.plateLabel.bs}</span>
+      <span class="hero__plate-value" {...bi(hero.plateValue)}>{hero.plateValue.bs}</span>
     </div>
   </div>
 </section>

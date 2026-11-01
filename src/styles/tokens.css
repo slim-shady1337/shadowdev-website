@@ -1,0 +1,81 @@
+/* ==========================================================================
+   ShadowDev — design tokens
+   Foundry world: cool soot iron, heat only where work happens, vellum for
+   what has cooled. Every value here is used somewhere; nothing is decorative.
+   ========================================================================== */
+
+:root {
+  /* --- palette ------------------------------------------------------------ */
+  --tmina: #0b0d0e;        /* ground — cool shadow, never pure black */
+  --grafit: #15191b;       /* raised plate */
+  --grafit-2: #1c2123;     /* plate on plate */
+  --celik: #8c9298;        /* secondary text on iron, hairlines */
+  --hartija: #ecede8;      /* cooled vellum: delivered work */
+  --jezgro: #ff5e1f;       /* heat where work is happening — primary */
+  --zar: #ff9911;          /* hottest edge — hover, live state */
+
+  /* derived roles (not new brand colours) */
+  --tekst-d: #d9dcd6;      /* reading text on iron */
+  --tinta: #0b0d0e;        /* text on vellum */
+  --celik-tinta: #525a5e;  /* secondary text on vellum */
+  --greska: #a3210d;       /* form error, only ever on vellum */
+  --linija-d: color-mix(in srgb, var(--hartija) 17%, transparent);
+  --linija-d-jaka: color-mix(in srgb, var(--hartija) 30%, transparent);
+  --linija-p: color-mix(in srgb, var(--tinta) 17%, transparent);
+  --linija-p-jaka: color-mix(in srgb, var(--tinta) 32%, transparent);
+
+  /* --- type --------------------------------------------------------------- */
+  --f-display: 'Anybody', 'Archivo', system-ui, sans-serif;
+  --f-text: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-code: 'Martian Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --t-hero: clamp(2.55rem, 5.1vw, 4.5rem);
+  --t-h2: clamp(1.85rem, 3.15vw, 2.9rem);
+  --t-h3: clamp(1.15rem, 1.5vw, 1.4rem);
+  --t-lead: clamp(1.05rem, 1.15vw, 1.28rem);
+  --t-body: 1.0625rem;
+  --t-small: 0.875rem;
+  --t-micro: 0.6875rem;
+  --t-num: clamp(2.6rem, 3.6vw, 3.4rem);
+
+  --lh-display: 0.88;
+  --lh-tight: 1.12;
+  --lh-body: 1.62;
+  --ls-display: -0.012em;
+  --ls-micro: 0.14em;
+
+  /* --- space / grid ------------------------------------------------------- */
+  --gut: clamp(14px, 1.5vw, 22px);
+  --pad: clamp(20px, 4.2vw, 68px);
+  --maxw: 1560px;
+  --stack-1: clamp(0.5rem, 0.7vw, 0.75rem);
+  --stack-2: clamp(1rem, 1.4vw, 1.5rem);
+  --stack-3: clamp(1.75rem, 2.6vw, 2.75rem);
+  --stack-4: clamp(2.75rem, 4.6vw, 5rem);
+  --stack-5: clamp(4rem, 8vw, 9rem);
+
+  /* --- form language ------------------------------------------------------ */
+  --chamfer: 14px;         /* the single cut corner, borrowed from the mark */
+  --chamfer-sm: 8px;
+  --hair: 1px;
+
+  /* --- motion ------------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.68, 0.16, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-3: 520ms;
+
+  --z-world: 0;
+  --z-content: 1;
+  --z-rule: 40;
+  --z-nav: 50;
+
+  color-scheme: dark;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --chamfer: 11px;
+  }
+}

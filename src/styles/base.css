@@ -1,0 +1,478 @@
+/* ==========================================================================
+   Base: reset, type, controls, rules
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto;
+}
+
+html.is-lenis {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--tmina);
+  color: var(--tekst-d);
+  font-family: var(--f-text);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+::selection {
+  background: var(--jezgro);
+  color: var(--tinta);
+}
+
+:focus-visible {
+  outline: 2px solid var(--zar);
+  outline-offset: 3px;
+  border-radius: 0;
+}
+
+[data-bg='paper'] :focus-visible,
+[data-nav='paper'] :focus-visible {
+  outline-color: var(--tinta);
+}
+
+/* scrollbar: thin iron rail */
+@supports (scrollbar-width: thin) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--grafit-2) var(--tmina);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gut);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  translate: -50% -200%;
+  z-index: 100;
+  background: var(--jezgro);
+  color: var(--tinta);
+  padding: 0.8em 1.1em;
+  font: 600 0.875rem/1 var(--f-text);
+  text-decoration: none;
+  transition: translate var(--dur-2) var(--ease);
+}
+
+.skip:focus-visible {
+  translate: -50% 0;
+  outline-color: var(--tinta);
+}
+
+/* --------------------------------------------------------------------------
+   Type
+   -------------------------------------------------------------------------- */
+
+.u-display {
+  font-family: var(--f-display);
+  font-weight: 760;
+  font-stretch: 116%;
+  text-transform: uppercase;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+  color: var(--hartija);
+}
+
+.u-h2 {
+  font-size: var(--t-h2);
+}
+
+.u-micro {
+  font-family: var(--f-code);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--celik);
+}
+
+.u-lead {
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--tekst-d);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.u-body {
+  max-width: 60ch;
+  color: var(--celik);
+  text-wrap: pretty;
+}
+
+[data-bg='paper'] .u-display {
+  color: var(--tinta);
+}
+
+[data-bg='paper'] .u-lead {
+  color: var(--tinta);
+}
+
+[data-bg='paper'] .u-body {
+  color: var(--celik-tinta);
+}
+
+[data-bg='paper'] .u-micro {
+  color: var(--celik-tinta);
+}
+
+/* --------------------------------------------------------------------------
+   Controls
+   -------------------------------------------------------------------------- */
+
+.btn {
+  --_bg: var(--jezgro);
+  --_fg: var(--tinta);
+  --_edge: var(--jezgro);
+  position: relative;
+  display: inline-flex;
+  padding: 1px;
+  border: 0;
+  background: var(--_edge);
+  color: var(--_fg);
+  font: 600 0.9375rem/1 var(--f-text);
+  letter-spacing: 0.008em;
+  text-decoration: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - var(--chamfer)) 0, 100% var(--chamfer), 100% 100%, 0 100%);
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--dur-1) var(--ease);
+}
+
+.btn__face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.95em 1.35em;
+  background: var(--_bg);
+  color: var(--_fg);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--chamfer) + 1.2px) 0,
+    100% calc(var(--chamfer) - 1.2px),
+    100% 100%,
+    0 100%
+  );
+  transition:
+    background var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+
+.btn:hover {
+  --_bg: var(--zar);
+  --_edge: var(--zar);
+  color: var(--tinta);
+}
+
+.btn:active {
+  --_bg: color-mix(in srgb, var(--zar) 82%, var(--tinta));
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--zar);
+  outline-offset: 4px;
+}
+
+[data-bg='paper'] .btn {
+  --_bg: var(--tinta);
+  --_fg: var(--hartija);
+  --_edge: var(--tinta);
+}
+
+[data-bg='paper'] .btn:hover {
+  --_bg: var(--jezgro);
+  --_fg: var(--tinta);
+  --_edge: var(--jezgro);
+}
+
+[data-bg='paper'] .btn:focus-visible {
+  outline-color: var(--tinta);
+}
+
+.btn--ghost {
+  --_bg: color-mix(in srgb, var(--tmina) 84%, transparent);
+  --_fg: var(--hartija);
+  --_edge: var(--linija-d-jaka);
+}
+
+.btn--ghost:hover {
+  --_bg: color-mix(in srgb, var(--jezgro) 16%, var(--tmina));
+  --_fg: var(--zar);
+  --_edge: var(--jezgro);
+}
+
+[data-bg='paper'] .btn--ghost {
+  --_bg: #f5f6f1;
+  --_fg: var(--tinta);
+  --_edge: var(--linija-p-jaka);
+}
+
+[data-bg='paper'] .btn--ghost:hover {
+  --_bg: color-mix(in srgb, var(--jezgro) 12%, transparent);
+  --_fg: var(--tinta);
+  --_edge: var(--jezgro);
+}
+
+.btn--block {
+  display: flex;
+  width: 100%;
+}
+
+.btn[aria-busy='true'],
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.62;
+}
+
+.spinner {
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  animation: spin 900ms steps(4, end) infinite;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.link {
+  color: var(--hartija);
+  text-decoration: underline;
+  text-decoration-color: var(--linija-d-jaka);
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+  transition:
+    color var(--dur-1) var(--ease),
+    text-decoration-color var(--dur-1) var(--ease);
+}
+
+.link:hover {
+  color: var(--zar);
+  text-decoration-color: var(--zar);
+}
+
+[data-bg='paper'] .link {
+  color: var(--tinta);
+  text-decoration-color: var(--linija-p-jaka);
+}
+
+[data-bg='paper'] .link:hover {
+  color: var(--tinta);
+  text-decoration-color: var(--jezgro);
+}
+
+/* --------------------------------------------------------------------------
+   Rules, tags, plates
+   -------------------------------------------------------------------------- */
+
+.rule {
+  height: 1px;
+  background: var(--linija-d);
+  border: 0;
+}
+
+[data-bg='paper'] .rule {
+  background: var(--linija-p);
+}
+
+/* a measured edge: ticks carry the idea of a scale, not ornament */
+.ticks {
+  height: 8px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--linija-d-jaka) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+[data-bg='paper'] .ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--linija-p-jaka) 0 1px,
+    transparent 1px 8px
+  );
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.42em 0.6em;
+  border: 1px solid var(--linija-d-jaka);
+  font-family: var(--f-code);
+  font-size: var(--t-micro);
+  font-weight: 500;
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--celik);
+  white-space: nowrap;
+}
+
+[data-bg='paper'] .tag {
+  border-color: var(--linija-p-jaka);
+  color: var(--celik-tinta);
+}
+
+.tag--heat {
+  border-color: var(--jezgro);
+  color: var(--jezgro);
+}
+
+.tag--solid {
+  background: var(--jezgro);
+  border-color: var(--jezgro);
+  color: var(--tinta);
+}
+
+.mark-square {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--jezgro);
+  translate: 0 -0.1em;
+}
+
+/* --------------------------------------------------------------------------
+   Section heads — a rule and a title, no eyebrow labels
+   -------------------------------------------------------------------------- */
+
+.head {
+  display: grid;
+  gap: var(--stack-2);
+  padding-top: var(--stack-2);
+  border-top: 1px solid var(--linija-d);
+}
+
+.head h2 {
+  font-size: var(--t-h2);
+  max-width: 22ch;
+}
+
+[data-bg='paper'] .head {
+  border-top-color: var(--linija-p);
+}
+
+.head__offset {
+  margin-left: auto;
+  max-width: 46ch;
+}
+
+/* --------------------------------------------------------------------------
+   Split sections: label column + body column, never an eyebrow above a title
+   -------------------------------------------------------------------------- */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: var(--stack-3) var(--gut);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Motion defaults
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

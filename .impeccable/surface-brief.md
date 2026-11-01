@@ -8,7 +8,7 @@
 
 **FIRST VIEWPORT:** Full-bleed dark. Six real business artifacts — a ledger plate, a work-order tag, a dashboard, a phone billet, a website panel, a reach chart — drift apart in deep void, lit only on their edges. Punched-caps headline holds the left five columns, max 24 characters per line; `ONEFORALL` sits as a plate label on the rule beneath it; one orange action, one quiet text link. A measured station index runs the left edge, and a dimension rule closes the bottom edge.
 
-**FORM:** Direction 3 of 7 (foundry / casting), assigned by the roll. `seed:cdbc6f29f81167a3`.
+**FORM:** Direction 3 of the seven directions I derived myself and ordered by resonance (foundry / casting); the roll assigned that index rather than a catalog card. `seed:cdbc6f29f81167a3`.
 
 **RAISES (named for the hand each beat):** *oscilloscope:* the index and progress are measured against a real scale, not a decorative bar. *comic page:* unintegrated modules sit out of register and snap into register when they join. *zine:* the convergence diagram draws its own leader lines as it enters. *console dashboard:* void is a material — six objects, not sixty. *sneaker boxes:* every container carries an end-label grid (code, name, spec). *Versailles:* one axis, thresholds in sequence, the finale waking in order.
 

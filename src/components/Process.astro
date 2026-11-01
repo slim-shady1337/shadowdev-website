@@ -1,35 +1,27 @@
 ---
-// Proces — 4 koraka s linijom koja se crta pri skrolu
-const steps = [
-  { num: '01', title: 'Otkriće', text: 'Slušamo, analiziramo vaše procese i definišemo ciljeve i mjerljive rezultate.' },
-  { num: '02', title: 'Dizajn', text: 'Oblikujemo rješenje — arhitekturu, prototip i korisničko iskustvo po mjeri.' },
-  { num: '03', title: 'Razvoj', text: 'Gradimo agilno, u iteracijama, uz kontinuirano testiranje i transparentnu komunikaciju.' },
-  { num: '04', title: 'Lansiranje', text: 'Puštamo u produkciju, pratimo performanse i pružamo podršku i nadogradnje.' },
-];
+import { process } from '../content/site';
+import { bi } from '../lib/bi';
 ---
 
-<section class="section" id="proces">
-  <div class="container">
-    <div class="section-head" data-reveal>
-      <div>
-        <span class="eyebrow">Proces</span>
-        <h2 class="section-title">Kako <span class="accent">radimo</span></h2>
-      </div>
-      <p class="section-subtitle">Transparentan proces u četiri koraka — od prve ideje do mjerljivih rezultata.</p>
+<section class="band" id="proces" aria-labelledby="process-title">
+  <div class="shell band__inner">
+    <div class="head">
+      <h2 id="process-title" class="u-display" {...bi(process.h2)}>{process.h2.bs}</h2>
+      <p class="u-lead" {...bi(process.lead)}>{process.lead.bs}</p>
     </div>
 
-    <div class="process-line" id="process-line" aria-hidden="true">
-      <div class="fill" id="process-line-fill"></div>
-    </div>
-
-    <div class="process-grid">
-      {steps.map((step, i) => (
-        <div class="process-step" data-reveal style={`--reveal-i: ${i}`}>
-          <span class="num">{step.num}</span>
-          <h3>{step.title}</h3>
-          <p>{step.text}</p>
-        </div>
+    <ol class="routing">
+      {process.steps.map((s) => (
+        <li class="routing__row">
+          <span class="routing__op">{s.op}</span>
+          <span class="routing__name" {...bi(s.name)}>{s.name.bs}</span>
+          <span class="routing__text" {...bi(s.text)}>{s.text.bs}</span>
+          <span class="routing__result">
+            <span {...bi(process.resultLabel)}>{process.resultLabel.bs}</span>
+            <span {...bi(s.result)}>{s.result.bs}</span>
+          </span>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>

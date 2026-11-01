@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="bs">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="fonts-local.css" />
+    <style>
+      @page {
+        size: 1200px 630px;
+      }
+      :root {
+        --tmina: #0b0d0e;
+        --hartija: #ecede8;
+        --celik: #8c9298;
+        --jezgro: #ff5e1f;
+        --zar: #ff9911;
+        --f-display: 'Anybody', sans-serif;
+        --f-text: 'Archivo', sans-serif;
+        --f-code: 'Martian Mono', monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        background:
+          radial-gradient(52% 60% at 82% 22%, rgba(255, 94, 31, 0.22), transparent 70%),
+          radial-gradient(40% 50% at 8% 96%, rgba(255, 153, 17, 0.1), transparent 70%),
+          var(--tmina);
+        color: var(--hartija);
+        font-family: var(--f-text);
+        padding: 62px 68px 52px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        position: relative;
+      }
+      .frame {
+        position: absolute;
+        inset: 26px;
+        border: 1px solid rgba(236, 237, 232, 0.16);
+      }
+      .frame::before,
+      .frame::after {
+        content: '';
+        position: absolute;
+        background: rgba(236, 237, 232, 0.16);
+      }
+      .frame::before {
+        left: -0.5px;
+        top: 30%;
+        width: 1px;
+        height: 40%;
+      }
+      .frame::after {
+        right: -0.5px;
+        top: 30%;
+        width: 1px;
+        height: 40%;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        z-index: 2;
+      }
+      header img {
+        height: 40px;
+        width: auto;
+      }
+      header .word {
+        height: 17px;
+        width: auto;
+      }
+      h1 {
+        font-family: var(--f-display);
+        font-weight: 760;
+        font-stretch: 116%;
+        font-size: 78px;
+        line-height: 0.9;
+        letter-spacing: -0.012em;
+        text-transform: uppercase;
+        max-width: 15ch;
+        position: relative;
+        z-index: 2;
+      }
+      footer {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 40px;
+        position: relative;
+        z-index: 2;
+      }
+      .tag {
+        font-family: var(--f-code);
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--celik);
+        line-height: 1.8;
+        max-width: 46ch;
+      }
+      .slogan {
+        font-family: var(--f-display);
+        font-weight: 700;
+        font-stretch: 120%;
+        font-size: 22px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--zar);
+        text-align: right;
+        white-space: nowrap;
+      }
+      .slogan small {
+        display: block;
+        font-family: var(--f-code);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        color: var(--celik);
+        margin-top: 8px;
+      }
+      .cut {
+        position: absolute;
+        right: 68px;
+        top: 118px;
+        width: 240px;
+        height: 240px;
+        background: var(--jezgro);
+        clip-path: polygon(0 0, calc(100% - 46px) 0, 100% 46px, 100% 100%, 0 100%);
+        opacity: 0.09;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame"></div>
+    <div class="cut"></div>
+
+    <header>
+      <img src="../public/brand/mark-color.png" alt="" />
+      <img class="word" src="../public/brand/word-color.png" alt="ShadowDev" />
+    </header>
+
+    <h1>Jedan sistem za cijelu firmu.</h1>
+
+    <footer>
+      <p class="tag">ERP · MES · PO MJERI<br />WEB · MOBILNO · MARKETING</p>
+      <p class="slogan">OneForAll<small>1 partner · 6 sklopova · 1 sistem</small></p>
+    </footer>
+  </body>
+</html>

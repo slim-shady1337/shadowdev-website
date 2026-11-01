@@ -1,48 +1,169 @@
 ---
-// Kontakt — veliki CTA + Netlify forma + kontakt podaci
+import { contact } from '../content/site';
+import { bi } from '../lib/bi';
+
+const f = contact.form;
 ---
 
-<section class="section" id="kontakt">
-  <div class="container">
-    <div class="contact-field" data-reveal>
-      <div class="contact-inner">
-        <div>
-          <span class="eyebrow">Kontakt</span>
-          <h2 class="contact-title">Spremni za digitalnu <span class="accent">budućnost?</span></h2>
-          <p class="contact-text">
-            Zakažite besplatni sastanak i otkrijte kako možemo unaprijediti vaše poslovanje.
-            Odgovaramo u roku od 24 sata.
-          </p>
-          <div class="contact-meta">
-            <a href="mailto:info@shadowdev.ba">✉ info@shadowdev.ba</a>
-            <a href="tel:+38761000000">✆ +387 61 000 000</a>
-            <span>📍 Bosna i Hercegovina</span>
+<section class="band" id="kontakt" aria-labelledby="contact-title">
+  <div class="shell band__inner">
+    <div class="contact__grid">
+      <div>
+        <h2 id="contact-title" class="u-display contact__title" {...bi(contact.h2)}>{contact.h2.bs}</h2>
+        <p class="contact__lead" {...bi(contact.lead)}>{contact.lead.bs}</p>
+
+        <dl class="contact__details">
+          {contact.details.map((d) => (
+            <div class="contact__detail">
+              <dt {...bi(d.label)}>{d.label.bs}</dt>
+              <dd>
+                {d.href ? (
+                  <a class="link" href={d.href}>{d.value}</a>
+                ) : (
+                  <span>{d.value}</span>
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <p class="contact__note" {...bi(contact.responseNote)}>{contact.responseNote.bs}</p>
+      </div>
+
+      <div class="form-plate">
+        <div class="form-plate__face">
+          <form
+            class="form"
+            id="contact-form"
+            name="kontakt"
+            method="POST"
+            action="/"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            novalidate
+          >
+            <input type="hidden" name="form-name" value="kontakt" />
+
+            <div class="honeypot" aria-hidden="true">
+              <label for="f-web">Ne popunjavajte ovo polje</label>
+              <input id="f-web" name="bot-field" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <p class="form__summary" id="form-summary" role="alert" hidden {...bi(f.errors.summary)}>
+              {f.errors.summary.bs}
+            </p>
+
+            <div class="form__row">
+              <div class="form-field" data-field="name">
+                <label class="form-field__label" for="f-ime" {...bi(f.name)}>{f.name.bs}</label>
+                <input
+                  class="input"
+                  id="f-ime"
+                  name="ime"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  maxlength="80"
+                  aria-describedby="f-ime-error"
+                  data-error-target="f-ime-error"
+                />
+                <p class="form-field__error" id="f-ime-error" hidden {...bi(f.errors.name)}>{f.errors.name.bs}</p>
+              </div>
+
+              <div class="form-field" data-field="email">
+                <label class="form-field__label" for="f-email" {...bi(f.email)}>{f.email.bs}</label>
+                <input
+                  class="input"
+                  id="f-email"
+                  name="email"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="email"
+                  required
+                  maxlength="120"
+                  aria-describedby="f-email-error"
+                  data-error-target="f-email-error"
+                />
+                <p class="form-field__error" id="f-email-error" hidden {...bi(f.errors.email)}>{f.errors.email.bs}</p>
+              </div>
+            </div>
+
+            <div class="form__row">
+              <div class="form-field" data-field="company">
+                <label class="form-field__label" for="f-firma">
+                  <span {...bi(f.company)}>{f.company.bs}</span>
+                  <span class="form-field__opt" {...bi(f.companyOptional)}>{f.companyOptional.bs}</span>
+                </label>
+                <input
+                  class="input"
+                  id="f-firma"
+                  name="firma"
+                  type="text"
+                  autocomplete="organization"
+                  maxlength="120"
+                />
+              </div>
+
+              <div class="form-field" data-field="topic">
+                <label class="form-field__label" for="f-tema" {...bi(f.topic)}>{f.topic.bs}</label>
+                <select
+                  class="input"
+                  id="f-tema"
+                  name="tema"
+                  required
+                  aria-describedby="f-tema-error"
+                  data-error-target="f-tema-error"
+                >
+                  <option value="" selected disabled {...bi(f.topicPlaceholder)}>{f.topicPlaceholder.bs}</option>
+                  {f.topics.map((t) => (
+                    <option value={t.bs} {...bi(t)}>{t.bs}</option>
+                  ))}
+                </select>
+                <p class="form-field__error" id="f-tema-error" hidden {...bi(f.errors.topic)}>{f.errors.topic.bs}</p>
+              </div>
+            </div>
+
+            <div class="form-field" data-field="message">
+              <label class="form-field__label" for="f-poruka" {...bi(f.message)}>{f.message.bs}</label>
+              <textarea
+                class="input"
+                id="f-poruka"
+                name="poruka"
+                required
+                minlength="20"
+                maxlength="2000"
+                aria-describedby="f-poruka-hint f-poruka-error"
+                data-error-target="f-poruka-error"
+              ></textarea>
+              <p class="form-field__hint" id="f-poruka-hint" {...bi(f.messageHint)}>{f.messageHint.bs}</p>
+              <p class="form-field__error" id="f-poruka-error" hidden {...bi(f.errors.message)}>{f.errors.message.bs}</p>
+            </div>
+
+            <div class="form__foot">
+              <button class="btn btn--block" type="submit" id="contact-submit">
+                <span class="btn__face">
+                  <span data-label="idle" {...bi(f.submit)}>{f.submit.bs}</span>
+                  <span data-label="busy" hidden {...bi(f.sending)}>{f.sending.bs}</span>
+                </span>
+              </button>
+              <p class="form__privacy" {...bi(f.privacy)}>{f.privacy.bs}</p>
+            </div>
+
+            <p class="form__summary" id="send-error" role="alert" hidden {...bi(f.errors.sendFailed)}>
+              {f.errors.sendFailed.bs}
+            </p>
+          </form>
+
+          <div class="form__done" id="form-done" role="status" tabindex="-1" hidden>
+            <span class="form__done-mark" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 7.5l3.4 3.4L12 3.6" stroke="#0b0d0e" stroke-width="2" stroke-linecap="square" />
+              </svg>
+            </span>
+            <h3 {...bi(f.done.title)}>{f.done.title.bs}</h3>
+            <p {...bi(f.done.text)}>{f.done.text.bs}</p>
           </div>
         </div>
-
-        <form name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="form">
-          <p style="display:none">
-            <label>Ne popunjavaj: <input name="bot-field" /></label>
-          </p>
-
-          <div class="form-row">
-            <div class="field">
-              <label for="kontakt-ime">Ime i prezime *</label>
-              <input type="text" id="kontakt-ime" name="ime" required placeholder="Vaše ime" autocomplete="name" />
-            </div>
-            <div class="field">
-              <label for="kontakt-email">Email *</label>
-              <input type="email" id="kontakt-email" name="email" required placeholder="vas@email.com" autocomplete="email" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="kontakt-poruka">Poruka *</label>
-            <textarea id="kontakt-poruka" name="poruka" required placeholder="Opišite vaš projekt ili upit..."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn--lg" data-magnetic>Pošalji upit <span class="btn-arrow">→</span></button>
-        </form>
       </div>
     </div>
   </div>
