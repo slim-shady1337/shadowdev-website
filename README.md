@@ -1,43 +1,70 @@
-# Astro Starter Kit: Minimal
+# ShadowDev — OneForAll
+
+Single-page sajt kao **putovanje kroz digitalni sistem**: scroll vodi 3D kameru kroz šest stanica usluga do svijetlećeg jezgra — jedan partner, jedan sistem, sve povezano.
+
+## Pokretanje
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # dist/
+npm run preview  # lokalni pregled builda
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+> Napomena za Windows: ako `npm run build` padne na `.astro`/`node_modules` dozvolama, pokreni terminal sa punim pravima na folder projekta. (U ovom okruženju build je radio uz šire dopuštenje sandboxa.)
 
-## 🚀 Project Structure
+## Stack
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Astro 7** — statički sajt, jedan ulaz (`src/pages/index.astro`)
+- **Three.js** — 3D scena i kamera, lijeno učitana (`world` chunk)
+- **GSAP + ScrollTrigger** — mapiranje scrolla na kameru i stanice
+- **Lenis** — glatki scroll sinhronizovan sa GSAP tickerom
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Kako radi putovanje
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- `#journey` obuhvata hero → uvod → 6 stanica → spajanje.
+- Scroll progres (ScrollTrigger) mapira se na `CatmullRomCurve3` putanju; kamera leti kroz stanice.
+- Stanice su proceduralne (moduli, tunel impulsa, dijelovi koji se slažu, slojevi prozora, telefon, talasi signala); na kraju se sve stapa u jezgro („OneForAll").
+- Bez WebGL-a ili uz `prefers-reduced-motion`: scena se ne učitava (`html.no-3d`), sadržaj ostaje potpuno upotrebljiv.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Dizajn sistem
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Token | Hex | Uloga |
+|---|---|---|
+| Void | `#060609` | scena / pozadina |
+| Slate | `#101118` | površine |
+| Bone | `#E8E3D6` | primarni tekst |
+| Ash | `#8A8A94` | sekundarni tekst |
+| Ember | `#F0A23C` | jezgro / primarna akcija |
+| Signal | `#56E0C2` | podaci / živo stanje |
 
-## 🧞 Commands
+- **Display:** Syne (600–800) · **Tekst:** Manrope (400–600) · **Mono:** sistemski (`ui-monospace`)
+- Aktivni stilovi: `src/styles/system.css` + `src/styles/journey.css`
+- Komponente: `src/components/*` · skripte: `src/scripts/*`
 
-All commands are run from the root of the project, from a terminal:
+## Pristupačnost i performanse
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+- Semantički HTML, jedan `h1`, vidljiv fokus, skip link, `aria` oznake, forma sa `role="alert"` greškama.
+- Canvas je `aria-hidden`; sav sadržaj postoji kao tekst u sekcijama.
+- `prefers-reduced-motion`: bez 3D-a i bez animacija putovanja.
+- DPR ograničen (1.4 mobilno / 1.75 desktop), 3D lijeno, pauza kad je putovanje van ekrana ili tab skriven.
+- Meta + Open Graph + JSON-LD (`Organization`).
 
-## 👀 Want to learn more?
+## PLACEHOLDERI — popuniti prije objave
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. **Kontakt:** `info@shadowdev.ba`, `+387 61 000 000`, lokacija „Sarajevo" — u `BaseLayout.astro` (footer), `ContactSection.astro` i JSON-LD-u.
+2. **Reference:** dvije kartice i četiri brojke u `References.astro` (označene `PLACEHOLDER`) — zamijeniti stvarnim projektima/klijentima (uz dozvolu) i izmjerenim podacima.
+3. **OG slika:** `public/og.jpg` ne postoji — dodati 1200×630 i provjeriti `og:image`.
+4. **Canonical URL:** `https://shadowdev.ba/` u `BaseLayout.astro` (`siteUrl`) — promijeniti ako je domena drugačija.
+5. **Društvene mreže:** dodati `sameAs` u JSON-LD i linkove u footer ako ih koristite.
+6. **Logo:** koristi se postojeći `public/logo.png`; poželjna mono/svijetla varijanta za tamnu podlogu.
+7. **Forma:** Netlify Forms (`data-netlify="true"`, polje `form-name="kontakt"`). Lokalno se prikazuje simulirani uspjeh; na deployu radi stvarno slanje. Po potrebi dodati `action`.
+8. **Sigurnosna zaglavlja:** preporučeni CSP (npr. `default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; connect-src 'self'`) — podesiti na hostingu. Nema tajnih ključeva u kodu.
+
+## QA (opciono)
+
+`qa/qa.mjs` pokreće instalirani Chrome preko `puppeteer-core` (nije dio produkcionog bundlea) i provjerava 375/768/1440, reduced-motion, formu i jezik. Rezultati i screenshotovi su u `qa/out/`.
+
+## Napomena o starim fajlovima
+
+Fajlovi iz prethodne iteracije (`global.css`, `cyberpunk.css`, stari `components/*`, stari `scripts/*` osim `nav.js`) više se ne uvoze i mogu se obrisati.

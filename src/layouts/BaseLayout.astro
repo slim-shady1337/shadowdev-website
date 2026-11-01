@@ -1,74 +1,117 @@
 ---
-import '../styles/global.css';
-import ContactModal from '../components/ContactModal.astro';
+import '../styles/system.css';
+import '../styles/journey.css';
 
 export interface Props {
   title: string;
   description?: string;
 }
 
-const { 
-  title, 
-  description = "ShadowDev - ERP & MES rješenja, Web & App Development" 
+const {
+  title,
+  description =
+    'ShadowDev gradi ERP, MES i softver po mjeri koji povezuje cijelu firmu — plus web stranice, mobilne aplikacije i digitalni marketing. OneForAll.'
 } = Astro.props;
+
+const siteUrl = 'https://shadowdev.ba/';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ShadowDev',
+  slogan: 'OneForAll',
+  url: siteUrl,
+  email: 'info@shadowdev.ba',
+  telephone: '+38761000000',
+  description:
+    'ERP i MES sistemi, softver po mjeri, web stranice, mobilne aplikacije i digitalni marketing.',
+  areaServed: 'BA',
+  knowsAbout: [
+    'ERP',
+    'MES',
+    'Softver po mjeri',
+    'Web razvoj',
+    'Mobilne aplikacije',
+    'Digitalni marketing'
+  ]
+};
 ---
 
 <!DOCTYPE html>
-<html lang="hr">
+<html lang="bs">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title} | ShadowDev</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>{title} — ShadowDev</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={siteUrl} />
+    <meta name="theme-color" content="#060609" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ShadowDev" />
+    <meta property="og:title" content={`${title} — ShadowDev`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={`${siteUrl}og.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} — ShadowDev`} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <script is:inline>
       (function () {
-        const stored = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (stored === 'dark' || (!stored && prefersDark)) {
-          document.documentElement.classList.add('dark');
-        }
+        document.documentElement.classList.add('js');
+        var stored = localStorage.getItem('lang');
+        if (stored === 'en') document.documentElement.setAttribute('lang', 'en');
       })();
     </script>
   </head>
   <body>
-    <!-- HEADER -->
-    <header class="site-header" id="site-header">
-      <div class="header-inner">
-        <!-- Brand (logo + banner) -->
-        <a href="/" class="header-brand">
-          <img src="/logo.png" alt="ShadowDev" class="brand-logo" />
-          <img src="/banner.png" alt="" class="brand-banner" />
+    <a class="skip" href="#main" data-bs="Preskoči na sadržaj" data-en="Skip to content">Preskoči na sadržaj</a>
+
+    <!-- 3D world (fixed, behind content) -->
+    <div class="world" id="world" aria-hidden="true">
+      <canvas class="world-canvas" id="world-canvas"></canvas>
+    </div>
+
+    <!-- NAV -->
+    <header class="site-nav" id="site-nav">
+      <div class="nav-inner">
+        <a href="#pocetak" class="nav-brand" aria-label="ShadowDev — početak">
+          <img src="/logo.png" alt="" />
+          <span class="brand-word">ShadowDev</span>
+          <span class="brand-tag">ONEFORALL</span>
         </a>
-        
-        <!-- Desktop nav -->
-        <nav class="nav-desktop">
-          <a href="/" class="nav-link">Početna</a>
-          <a href="/usluge" class="nav-link">Usluge</a>
-          <a href="/o-nama" class="nav-link">O nama</a>
-          <a href="/kontakt" class="nav-link">Kontakt</a>
+
+        <nav class="nav-links" aria-label="Glavna navigacija">
+          <a href="#stanica-1" class="nav-link" data-bs="Sistem" data-en="System">Sistem</a>
+          <a href="#proces" class="nav-link" data-bs="Kako radimo" data-en="How we work">Kako radimo</a>
+          <a href="#sigurnost" class="nav-link" data-bs="Sigurnost" data-en="Security">Sigurnost</a>
+          <a href="#reference" class="nav-link" data-bs="Reference" data-en="Work">Reference</a>
+          <a href="#kontakt" class="nav-link" data-bs="Kontakt" data-en="Contact">Kontakt</a>
         </nav>
-        
-        <!-- Actions -->
-        <div class="header-actions">
-          <button class="btn-primary header-cta" data-open-modal>
-            Zakaži sastanak
-          </button>
-          
-          <button id="theme-toggle" class="btn-toggle" aria-label="Prebaci temu">
-            <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="4" />
-              <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+
+        <div class="nav-actions">
+          <div class="lang" role="group" aria-label="Jezik / Language">
+            <button type="button" data-lang="bs" aria-pressed="true">BS</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <a href="#kontakt" class="btn nav-cta" data-bs="Zakaži razgovor" data-en="Book a call">Zakaži razgovor</a>
+          <button class="menu-btn" id="menu-btn" aria-label="Otvori meni" aria-expanded="false" aria-controls="mobile-menu">
+            <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
             </svg>
-            <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="hidden">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg>
-          </button>
-          
-          <button id="mobile-menu-btn" class="btn-menu-mobile" aria-label="Meni">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
         </div>
@@ -76,178 +119,86 @@ const {
     </header>
 
     <!-- MOBILE MENU -->
-    <div id="mobile-menu" class="mobile-menu">
-      <div class="mobile-menu-panel">
-        <a href="/" class="nav-link">Početna</a>
-        <a href="/usluge" class="nav-link">Usluge</a>
-        <a href="/o-nama" class="nav-link">O nama</a>
-        <a href="/kontakt" class="nav-link">Kontakt</a>
-        
-        <button class="btn-primary" data-open-modal>
-          Zakaži sastanak
-        </button>
-        
-        <div class="mobile-menu-theme">
-          <span class="mobile-menu-theme-label">Tema</span>
-          <button class="btn-toggle" data-theme-toggle aria-label="Prebaci temu">
-            <svg class="theme-icon-sun-mobile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="4" />
-              <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-            </svg>
-            <svg class="theme-icon-moon-mobile hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-            </svg>
-          </button>
-        </div>
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <a href="#stanica-1" class="m-link" data-bs="Sistem" data-en="System">Sistem</a>
+      <a href="#proces" class="m-link" data-bs="Kako radimo" data-en="How we work">Kako radimo</a>
+      <a href="#sigurnost" class="m-link" data-bs="Sigurnost" data-en="Security">Sigurnost</a>
+      <a href="#reference" class="m-link" data-bs="Reference" data-en="Work">Reference</a>
+      <a href="#kontakt" class="m-link" data-bs="Kontakt" data-en="Contact">Kontakt</a>
+      <div class="m-foot">
+        <a href="#kontakt" class="btn" data-bs="Zakaži razgovor" data-en="Book a call">Zakaži razgovor</a>
       </div>
     </div>
 
-    <!-- MODAL -->
-    <ContactModal />
+    <!-- STATION RAIL -->
+    <nav class="rail" aria-label="Stanice putovanja">
+      <span class="rail-label">ONE · FOR · ALL</span>
+      <span class="rail-track"><i class="rail-fill" id="rail-fill"></i></span>
+      <ol class="rail-list">
+        <li><a href="#stanica-1" data-rail="1">01</a></li>
+        <li><a href="#stanica-2" data-rail="2">02</a></li>
+        <li><a href="#stanica-3" data-rail="3">03</a></li>
+        <li><a href="#stanica-4" data-rail="4">04</a></li>
+        <li><a href="#stanica-5" data-rail="5">05</a></li>
+        <li><a href="#stanica-6" data-rail="6">06</a></li>
+      </ol>
+    </nav>
 
-    <!-- MAIN -->
-    <main class="main-content">
+    <!-- TELEMETRY -->
+    <div class="telemetry" aria-hidden="true">
+      <span>DEPTH</span>
+      <span class="tele-bar"><i id="tele-bar"></i></span>
+      <span class="tele-value" id="tele-value">000</span>
+      <span class="tele-station" id="tele-station">00 / START</span>
+    </div>
+
+    <main id="main">
       <slot />
     </main>
 
     <!-- FOOTER -->
     <footer class="site-footer">
-      <div class="container-page footer-inner">
-        <div class="footer-grid">
+      <div class="shell footer-inner">
+        <div class="footer-top">
           <div>
-            <h3 class="footer-title text-gradient">ShadowDev</h3>
-            <p class="footer-text">ERP & MES rješenja, Web & App Development, Social Media Marketing</p>
+            <a href="#pocetak" class="footer-brand">
+              <img src="/logo.png" alt="" />
+              <span class="fw">ShadowDev</span>
+            </a>
+            <span class="footer-slogan">ONEFORALL</span>
+            <p class="footer-note" data-bs="Jedan partner, jedan sistem, sve povezano." data-en="One partner, one system, everything connected.">Jedan partner, jedan sistem, sve povezano.</p>
           </div>
-          <div>
-            <h4 class="footer-heading">Usluge</h4>
-            <ul class="footer-links">
-              <li><a href="/usluge" class="footer-link">ERP & MES</a></li>
-              <li><a href="/usluge" class="footer-link">Web & App</a></li>
-              <li><a href="/usluge" class="footer-link">Social Media Marketing</a></li>
+          <div class="footer-col">
+            <h4 data-bs="Usluge" data-en="Services">Usluge</h4>
+            <ul>
+              <li><a href="#stanica-1" data-bs="ERP sistem" data-en="ERP system">ERP sistem</a></li>
+              <li><a href="#stanica-2" data-bs="MES proizvodnja" data-en="MES production">MES proizvodnja</a></li>
+              <li><a href="#stanica-3" data-bs="Softver po mjeri" data-en="Custom software">Softver po mjeri</a></li>
+              <li><a href="#stanica-4" data-bs="Web i aplikacije" data-en="Web & apps">Web i aplikacije</a></li>
+              <li><a href="#stanica-5" data-bs="Mobilne aplikacije" data-en="Mobile apps">Mobilne aplikacije</a></li>
+              <li><a href="#stanica-6" data-bs="Digitalni marketing" data-en="Digital marketing">Digitalni marketing</a></li>
             </ul>
           </div>
-          <div>
-            <h4 class="footer-heading">Linkovi</h4>
-            <ul class="footer-links">
-              <li><a href="/o-nama" class="footer-link">O nama</a></li>
-              <li><a href="/kontakt" class="footer-link">Kontakt</a></li>
+          <div class="footer-col">
+            <h4 data-bs="Kontakt" data-en="Contact">Kontakt</h4>
+            <ul>
+              <li><a href="mailto:info@shadowdev.ba">info@shadowdev.ba</a></li>
+              <li><a href="tel:+38761000000">+387 61 000 000</a></li>
+              <li><a href="#kontakt" data-bs="Pošalji upit" data-en="Send an inquiry">Pošalji upit</a></li>
             </ul>
-          </div>
-          <div>
-            <h4 class="footer-heading">Pratite nas</h4>
-            <div class="footer-social">
-              <a href="#" class="footer-link">LinkedIn</a>
-              <a href="#" class="footer-link">Instagram</a>
-              <a href="#" class="footer-link">Facebook</a>
-            </div>
           </div>
         </div>
         <div class="footer-bottom">
-          &copy; 2026 ShadowDev. Sva prava zadržana.
+          <span>© 2026 ShadowDev</span>
+          <span data-bs="Sarajevo, Bosna i Hercegovina" data-en="Sarajevo, Bosnia and Herzegovina">Sarajevo, Bosna i Hercegovina</span>
+          <a href="#pocetak" data-bs="Na vrh ↑" data-en="Back to top ↑">Na vrh ↑</a>
         </div>
       </div>
     </footer>
 
-    <!-- SKRIPTE -->
     <script>
-      // ============ SCROLL EFEKAT ============
-      const header = document.getElementById('site-header');
-      const scrollThreshold = 50;
-
-      function handleScroll() {
-        if (window.scrollY > scrollThreshold) {
-          header?.classList.add('scrolled');
-        } else {
-          header?.classList.remove('scrolled');
-        }
-      }
-
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      handleScroll(); // inicijalno
-
-      // ============ THEME TOGGLE ============
-      function updateThemeIcons() {
-        const isDark = document.documentElement.classList.contains('dark');
-        
-        // Desktop toggle
-        const sunDesktop = document.getElementById('theme-icon-sun');
-        const moonDesktop = document.getElementById('theme-icon-moon');
-        sunDesktop?.classList.toggle('hidden', isDark);
-        moonDesktop?.classList.toggle('hidden', !isDark);
-        
-        // Mobile toggle
-        const sunMobile = document.querySelector('.theme-icon-sun-mobile');
-        const moonMobile = document.querySelector('.theme-icon-moon-mobile');
-        sunMobile?.classList.toggle('hidden', isDark);
-        moonMobile?.classList.toggle('hidden', !isDark);
-      }
-
-      function toggleTheme() {
-        const isDark = document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateThemeIcons();
-      }
-
-      document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
-      document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
-        btn.addEventListener('click', toggleTheme);
-      });
-
-      updateThemeIcons();
-
-      // ============ MOBILE MENU ============
-      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-
-      function closeMobileMenu() {
-        mobileMenu?.classList.remove('open');
-      }
-
-      mobileMenuBtn?.addEventListener('click', () => {
-        mobileMenu?.classList.toggle('open');
-      });
-
-      mobileMenu?.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) closeMobileMenu();
-      });
-
-      // Zatvori mobile menu pri kliku na link
-      mobileMenu?.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMobileMenu);
-      });
-
-      // ============ MODAL ============
-      const modal = document.getElementById('contact-modal');
-      const modalClose = document.getElementById('modal-close');
-
-      function openModal() {
-        modal?.classList.add('open');
-        document.body.classList.add('modal-open');
-        closeMobileMenu();
-      }
-
-      function closeModal() {
-        modal?.classList.remove('open');
-        document.body.classList.remove('modal-open');
-      }
-
-      document.querySelectorAll('[data-open-modal]').forEach(btn => {
-        btn.addEventListener('click', openModal);
-      });
-
-      modalClose?.addEventListener('click', closeModal);
-
-      modal?.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-
-      // ESC zatvara modal
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeModal();
-          closeMobileMenu();
-        }
-      });
+      import { boot } from '../scripts/app.js';
+      boot();
     </script>
   </body>
 </html>

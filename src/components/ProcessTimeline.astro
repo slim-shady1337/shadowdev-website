@@ -1,0 +1,31 @@
+---
+// Kako radimo — stvarni slijed, numeracija je informativna
+const steps = [
+  { n: '01', bs: ['Analiza', 'Slušamo, gledamo vaše procese i definišemo šta sistem treba da riješi — i kako ćemo mjeriti uspjeh.'], en: ['Analysis', 'We listen, look at your processes and define what the system must solve — and how we will measure success.'] },
+  { n: '02', bs: ['Dizajn', 'Dogovaramo arhitekturu, ekrane i tokove. Prototip prije koda, da nema iznenađenja.'], en: ['Design', 'We agree on architecture, screens and flows. A prototype before code, so there are no surprises.'] },
+  { n: '03', bs: ['Razvoj', 'Gradimo u iteracijama, sa redovnim pregledima. Vidite napredak, ne samo završni e-mail.'], en: ['Build', 'We build in iterations with regular reviews. You see progress, not just a final email.'] },
+  { n: '04', bs: ['Isporuka', 'Testiramo, selimo podatke i puštamo u rad. Obuka i dokumentacija su dio isporuke.'], en: ['Delivery', 'We test, migrate data and go live. Training and documentation are part of delivery.'] },
+  { n: '05', bs: ['Podrška', 'Pratimo rad sistema, ispravljamo i nadograđujemo. Odgovornost ne prestaje puštanjem u rad.'], en: ['Support', 'We monitor the system, fix issues and extend it. Responsibility does not end at go-live.'] }
+];
+---
+
+<section class="section" id="proces">
+  <div class="shell">
+    <div class="section-head">
+      <h2 data-bs="Kako radimo" data-en="How we work">Kako radimo</h2>
+      <p data-bs="Jasan slijed od pet koraka. Znate šta se dešava, ko je odgovoran i šta dobijate na kraju svakog koraka." data-en="A clear five-step sequence. You know what happens, who is responsible and what you get at the end of each step.">
+        Jasan slijed od pet koraka. Znate šta se dešava, ko je odgovoran i šta dobijate na kraju svakog koraka.
+      </p>
+    </div>
+
+    <div class="process-list">
+      {steps.map((s) => (
+        <div class="process-step">
+          <span class="p-num">{s.n}</span>
+          <h3 data-bs={s.bs[0]} data-en={s.en[0]}>{s.bs[0]}</h3>
+          <p data-bs={s.bs[1]} data-en={s.en[1]}>{s.bs[1]}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

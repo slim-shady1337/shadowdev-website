@@ -1,0 +1,78 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\bin\npm-cli.js
+1 info using npm@12.2.0
+2 info using node@v24.19.0
+3 silly config load:file:C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\npmrc
+4 silly config load:file:D:\ShadowDev Website\shadowdev-website\.npmrc
+5 silly config load:file:C:\Users\fxpil\.npmrc
+6 silly config load:file:C:\Users\fxpil\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install three gsap lenis
+8 verbose argv "install" "--cache" ".npm-cache" "--no-audit" "--no-fund" "three" "gsap" "lenis"
+9 verbose logfile logs-max:10 dir:D:\ShadowDev Website\shadowdev-website\.npm-cache\_logs\2026-10-23T17_14_09_873Z-
+10 verbose logfile D:\ShadowDev Website\shadowdev-website\.npm-cache\_logs\2026-10-23T17_14_09_873Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 silly idealTree buildDeps
+15 silly fetch manifest three@*
+16 silly packumentCache full:https://registry.npmjs.org/three cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/three 512ms (cache miss)
+18 silly packumentCache full:https://registry.npmjs.org/three set size:undefined disposed:false
+19 silly fetch manifest gsap@*
+20 silly packumentCache full:https://registry.npmjs.org/gsap cache-miss
+21 http fetch GET 200 https://registry.npmjs.org/gsap 105ms (cache miss)
+22 silly packumentCache full:https://registry.npmjs.org/gsap set size:undefined disposed:false
+23 silly fetch manifest lenis@*
+24 silly packumentCache full:https://registry.npmjs.org/lenis cache-miss
+25 http fetch GET 200 https://registry.npmjs.org/npm 801ms
+26 http fetch GET 200 https://registry.npmjs.org/lenis 123ms (cache miss)
+27 silly packumentCache full:https://registry.npmjs.org/lenis set size:undefined disposed:false
+28 silly placeDep ROOT gsap@3.15.0 OK for: shadowdev-website@0.0.1 want: *
+29 silly placeDep ROOT lenis@1.3.27 OK for: shadowdev-website@0.0.1 want: *
+30 silly placeDep ROOT three@0.186.1 OK for: shadowdev-website@0.0.1 want: *
+31 silly reify moves {}
+32 verbose stack Error: EPERM: operation not permitted, mkdir 'D:\ShadowDev Website\shadowdev-website\node_modules\gsap'
+32 verbose stack     at async mkdir (node:internal/fs/promises:916:10)
+32 verbose stack     at async C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:622:20
+32 verbose stack     at async Promise.allSettled (index 0)
+32 verbose stack     at async #reifyPackages (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:352:11)
+32 verbose stack     at async Arborist.reify (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:139:7)
+32 verbose stack     at async Install.exec (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\commands\install.js:176:5)
+32 verbose stack     at async Npm.exec (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\npm.js:194:9)
+32 verbose stack     at async module.exports (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\cli\entry.js:67:5)
+33 error code EPERM
+34 error syscall mkdir
+35 error path D:\ShadowDev Website\shadowdev-website\node_modules\gsap
+36 error errno -4048
+37 error Error: EPERM: operation not permitted, mkdir 'D:\ShadowDev Website\shadowdev-website\node_modules\gsap'
+37 error     at async mkdir (node:internal/fs/promises:916:10)
+37 error     at async C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:622:20
+37 error     at async Promise.allSettled (index 0)
+37 error     at async #reifyPackages (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:352:11)
+37 error     at async Arborist.reify (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\node_modules\@npmcli\arborist\lib\arborist\reify.js:139:7)
+37 error     at async Install.exec (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\commands\install.js:176:5)
+37 error     at async Npm.exec (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\npm.js:194:9)
+37 error     at async module.exports (C:\Users\fxpil\AppData\Roaming\npm\node_modules\npm\lib\cli\entry.js:67:5) {
+37 error   errno: -4048,
+37 error   code: 'EPERM',
+37 error   syscall: 'mkdir',
+37 error   path: 'D:\\ShadowDev Website\\shadowdev-website\\node_modules\\gsap'
+37 error }
+38 error
+38 error The operation was rejected by your operating system.
+38 error It's possible that the file was already in use (by a text editor or antivirus), or that you lack permissions to access it.
+38 error
+38 error If you believe this might be a permissions issue, please double-check the permissions of the file and its containing directories, or try running the command again as root/Administrator.
+39 silly unfinished npm timer reify 1792775650323
+40 silly unfinished npm timer reify:createSparse 1792775651183
+41 verbose cwd D:\ShadowDev Website\shadowdev-website
+42 verbose os Windows_NT 10.0.26300
+43 verbose node v24.19.0
+44 verbose npm  v12.2.0
+45 notice
+45 notice New patch version of npm available! 12.2.0 -> 12.2.1
+45 notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+45 notice To update run: npm install -g npm@12.2.1
+45 notice  { force: true, Symbol(proc-log.meta): true }
+46 verbose exit -4048
+47 verbose code -4048
+48 error A complete log of this run can be found in: D:\ShadowDev Website\shadowdev-website\.npm-cache\_logs\2026-10-23T17_14_09_873Z-debug-0.log

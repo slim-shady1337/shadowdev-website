@@ -1,0 +1,35 @@
+---
+// FAQ — accordion sa spring (grid-rows) animacijom
+const faqs = [
+  { q: 'Koliko traje izrada rješenja?', a: 'Zavisi od obima projekta. Manji projekti se završavaju za nekoliko sedmica, dok kompleksniji ERP/MES sistemi traju nekoliko mjeseci. Na početku definišemo jasan vremenski okvir i plan isporuke.' },
+  { q: 'Radite li samo u Bosni i Hercegovini?', a: 'Radimo sa klijentima širom regiona i svijeta. Komunikacija i upravljanje projektom se odvijaju online, uz redovne sastanke i transparentno izvještavanje.' },
+  { q: 'Da li pružate podršku nakon lansiranja?', a: 'Da. Svaki projekat uključuje period podrške, a nudimo i dugoročne ugovore o održavanju, nadogradnji i praćenju sistema.' },
+  { q: 'Koliko košta projekat?', a: 'Svaki projekat je jedinstven. Nakon besplatnog uvodnog sastanka pripremamo detaljnu ponudu prilagođenu vašim potrebama i budžetu.' },
+];
+---
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div>
+        <span class="eyebrow">FAQ</span>
+        <h2 class="section-title">Česta <span class="accent">pitanja</span></h2>
+      </div>
+      <p class="section-subtitle">Sve što trebate znati prije nego što započnemo saradnju.</p>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((faq, i) => (
+        <div class="faq-item" data-reveal style={`--reveal-i: ${i}`}>
+          <button class="faq-q" aria-expanded="false">
+            {faq.q}
+            <span class="plus" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a">
+            <div><p>{faq.a}</p></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

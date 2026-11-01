@@ -1,0 +1,116 @@
+---
+// Kontakt — forma sa validacijom i jasnim porukama
+---
+
+<section class="section" id="kontakt">
+  <div class="shell">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2 data-bs="Zakaži razgovor" data-en="Book a call">Zakaži razgovor</h2>
+        <p data-bs="Recite nam šta vam treba. Odgovaramo u roku od jednog radnog dana — bez prodajnog poziva i bez obaveze." data-en="Tell us what you need. We reply within one business day — no sales call and no obligation.">
+          Recite nam šta vam treba. Odgovaramo u roku od jednog radnog dana — bez prodajnog poziva i bez obaveze.
+        </p>
+
+        <div class="contact-lines">
+          <span class="contact-line">
+            <span class="mono">MAIL</span>
+            <a href="mailto:info@shadowdev.ba">info@shadowdev.ba</a>
+          </span>
+          <span class="contact-line">
+            <span class="mono">TEL</span>
+            <a href="tel:+38761000000">+387 61 000 000</a>
+          </span>
+          <span class="contact-line">
+            <span class="mono">LOC</span>
+            <span data-bs="Sarajevo, Bosna i Hercegovina" data-en="Sarajevo, Bosnia and Herzegovina">Sarajevo, Bosna i Hercegovina</span>
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <form class="form" id="contact-form" name="kontakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+          <p class="hp" aria-hidden="true">
+            <label>Ne popunjavaj <input id="f-bot" name="bot-field" type="text" tabindex="-1" autocomplete="off" /></label>
+          </p>
+
+          <div class="form-row">
+            <div class="field" data-field="ime">
+              <label for="f-ime"><span data-bs="Ime i prezime" data-en="Full name">Ime i prezime</span> <span class="req">*</span></label>
+              <input id="f-ime" name="ime" type="text" autocomplete="name" required
+                placeholder="Vaše ime" data-bs-placeholder="Vaše ime" data-en-placeholder="Your name"
+                aria-describedby="err-ime" />
+              <span class="field-error" id="err-ime" role="alert"></span>
+            </div>
+
+            <div class="field" data-field="email">
+              <label for="f-email">Email <span class="req">*</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" required
+                placeholder="vas@email.com"
+                aria-describedby="err-email" />
+              <span class="field-error" id="err-email" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field" data-field="firma">
+              <label for="f-firma" data-bs="Firma (opcionalno)" data-en="Company (optional)">Firma (opcionalno)</label>
+              <input id="f-firma" name="firma" type="text" autocomplete="organization"
+                placeholder="Naziv firme" data-bs-placeholder="Naziv firme" data-en-placeholder="Company name" />
+            </div>
+
+            <div class="field" data-field="telefon">
+              <label for="f-telefon" data-bs="Telefon (opcionalno)" data-en="Phone (optional)">Telefon (opcionalno)</label>
+              <input id="f-telefon" name="telefon" type="tel" autocomplete="tel"
+                placeholder="+387 61 000 000"
+                aria-describedby="err-telefon" />
+              <span class="field-error" id="err-telefon" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="field" data-field="usluga">
+            <label for="f-usluga" data-bs="Šta vam treba?" data-en="What do you need?">Šta vam treba?</label>
+            <select id="f-usluga" name="usluga">
+              <option value="" data-bs="Odaberite (opcionalno)" data-en="Select (optional)">Odaberite (opcionalno)</option>
+              <option value="erp" data-bs="ERP sistem" data-en="ERP system">ERP sistem</option>
+              <option value="mes" data-bs="MES / proizvodnja" data-en="MES / production">MES / proizvodnja</option>
+              <option value="custom" data-bs="Softver po mjeri" data-en="Custom software">Softver po mjeri</option>
+              <option value="web" data-bs="Web stranica ili aplikacija" data-en="Website or web app">Web stranica ili aplikacija</option>
+              <option value="mobile" data-bs="Mobilna aplikacija" data-en="Mobile app">Mobilna aplikacija</option>
+              <option value="marketing" data-bs="Digitalni marketing" data-en="Digital marketing">Digitalni marketing</option>
+              <option value="other" data-bs="Nešto drugo" data-en="Something else">Nešto drugo</option>
+            </select>
+            <span class="field-error" id="err-usluga" role="alert"></span>
+          </div>
+
+          <div class="field" data-field="poruka">
+            <label for="f-poruka"><span data-bs="Poruka" data-en="Message">Poruka</span> <span class="req">*</span></label>
+            <textarea id="f-poruka" name="poruka" required
+              placeholder="Opišite situaciju: šta radite danas, gdje se gubi vrijeme i šta bi trebalo da radi bolje."
+              data-bs-placeholder="Opišite situaciju: šta radite danas, gdje se gubi vrijeme i šta bi trebalo da radi bolje."
+              data-en-placeholder="Describe the situation: what you do today, where time is lost, and what should work better."
+              aria-describedby="err-poruka"></textarea>
+            <span class="field-error" id="err-poruka" role="alert"></span>
+          </div>
+
+          <div class="form-foot">
+            <button type="submit" class="btn" id="contact-submit">
+              <span class="btn-label" data-bs="Pošalji upit" data-en="Send inquiry">Pošalji upit</span>
+            </button>
+            <span class="form-status" id="form-status" role="status" aria-live="polite"></span>
+          </div>
+
+          <p class="field-hint" data-bs="Podatke koristimo samo da odgovorimo na upit. Bez newslettera." data-en="We use your details only to reply to your inquiry. No newsletter.">
+            Podatke koristimo samo da odgovorimo na upit. Bez newslettera.
+          </p>
+        </form>
+
+        <div class="form-done" id="form-done" hidden tabindex="-1">
+          <h3 data-bs="Upit je poslan." data-en="Inquiry sent.">Upit je poslan.</h3>
+          <p data-bs="Hvala. Odgovaramo u roku od jednog radnog dana na e-mail koji ste ostavili." data-en="Thank you. We reply within one business day to the email you left.">
+            Hvala. Odgovaramo u roku od jednog radnog dana na e-mail koji ste ostavili.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

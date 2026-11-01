@@ -1,0 +1,57 @@
+---
+// Spajanje — dijagram koji pokazuje kako se stanice vežu u jedno jezgro
+---
+
+<section class="convergence" id="spajanje">
+  <div class="shell">
+    <div class="convergence-grid">
+      <div>
+        <h2 data-bs="Sve se spaja u jedno." data-en="Everything merges into one.">Sve se spaja u jedno.</h2>
+        <p data-bs="Šest stanica nije šest odvojenih usluga. To su dijelovi istog sistema — i zato ih gradimo zajedno, sa istim podacima i istim pravilima." data-en="The six stations are not six separate services. They are parts of the same system — which is why we build them together, with the same data and the same rules.">
+          Šest stanica nije šest odvojenih usluga. To su dijelovi istog sistema — i zato ih gradimo zajedno, sa istim podacima i istim pravilima.
+        </p>
+        <span class="conv-quote" data-bs="OneForAll: jedan partner, jedan sistem, sve povezano." data-en="OneForAll: one partner, one system, everything connected.">OneForAll: jedan partner, jedan sistem, sve povezano.</span>
+      </div>
+
+      <div>
+        <svg class="system-map" viewBox="0 0 560 560" role="img" aria-labelledby="map-title map-desc">
+          <title id="map-title">OneForAll sistem</title>
+          <desc id="map-desc">Šest usluga — ERP, MES, softver po mjeri, web, mobilne aplikacije i marketing — povezano u jedno jezgro.</desc>
+
+          <circle class="map-core-glow" cx="280" cy="280" r="92" fill="var(--ember)" opacity="0.08" />
+          <circle class="map-core-ring" cx="280" cy="280" r="58" fill="none" stroke="var(--line-2)" />
+          <circle class="map-core" cx="280" cy="280" r="18" />
+
+          <g stroke-width="1">
+            <line class="map-edge" x1="280" y1="90" x2="280" y2="280" />
+            <line class="map-edge" x1="445" y1="185" x2="280" y2="280" />
+            <line class="map-edge" x1="445" y1="375" x2="280" y2="280" />
+            <line class="map-edge map-edge--live" x1="280" y1="470" x2="280" y2="280" />
+            <line class="map-edge" x1="115" y1="375" x2="280" y2="280" />
+            <line class="map-edge" x1="115" y1="185" x2="280" y2="280" />
+          </g>
+
+          <g>
+            <circle class="map-node" cx="280" cy="90" r="7" />
+            <text class="map-label" x="280" y="70" text-anchor="middle">ERP</text>
+
+            <circle class="map-node" cx="445" cy="185" r="7" />
+            <text class="map-label" x="460" y="180" text-anchor="start">MES</text>
+
+            <circle class="map-node" cx="445" cy="375" r="7" />
+            <text class="map-label" x="460" y="395" text-anchor="start">Custom</text>
+
+            <circle class="map-node" cx="280" cy="470" r="7" />
+            <text class="map-label" x="280" y="496" text-anchor="middle">Web</text>
+
+            <circle class="map-node" cx="115" cy="375" r="7" />
+            <text class="map-label" x="100" y="395" text-anchor="end">Mobile</text>
+
+            <circle class="map-node" cx="115" cy="185" r="7" />
+            <text class="map-label" x="100" y="180" text-anchor="end">Marketing</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>

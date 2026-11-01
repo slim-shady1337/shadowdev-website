@@ -1,0 +1,38 @@
+---
+// Svjedočanstva — auto-advancing slider (primjeri, zamijeniti stvarnim)
+const testimonials = [
+  { quote: 'ShadowDev nam je digitalizovao cijelu proizvodnju. Podaci koje smo ranije skupljali danima, sada vidimo u sekundi.', author: 'Marko Kovačević', role: 'Direktor proizvodnje, Metal Co.' },
+  { quote: 'Profesionalan tim, jasan proces i rješenje koje radi. Preporučio bih ih svakome kome treba pouzdan partner.', author: 'Ana Marić', role: 'Vlasnica, Studio A' },
+  { quote: 'Od web stranice do ERP integracije — sve na jednom mjestu. Mjerljivi rezultati već u prvim mjesecima.', author: 'Ivan Jurić', role: 'CEO, Logistički centar Jurić' },
+];
+---
+
+<section class="section" id="svjedocanstva">
+  <div class="container">
+    <div class="section-head" data-reveal style="justify-items: center; text-align: center; grid-template-columns: 1fr;">
+      <div>
+        <span class="eyebrow">Svjedočanstva</span>
+        <h2 class="section-title">Šta kažu <span class="accent">klijenti</span></h2>
+      </div>
+    </div>
+
+    <div class="testimonial-slider" id="testimonial-slider" data-reveal style="--reveal-i: 1">
+      <div class="testimonial-track" id="testimonial-track">
+        {testimonials.map((t) => (
+          <div class="testimonial-slide">
+            <div class="testimonial">
+              <span class="quote-mark">&ldquo;</span>
+              <p class="quote">{t.quote}</p>
+              <div class="author">
+                <strong>{t.author}</strong>
+                {t.role}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="testimonial-dots" id="testimonial-dots" role="tablist" aria-label="Svjedočanstva"></div>
+  </div>
+</section>

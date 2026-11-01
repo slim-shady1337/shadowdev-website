@@ -1,0 +1,35 @@
+---
+// Sigurnost — samo tvrdnje koje firma može potvrditi
+const items = [
+  { bs: ['Kontrola pristupa po ulogama', 'Svako vidi i mijenja samo ono što mu uloga dozvoljava. Prava se dodjeljuju i ukidaju bez diranja koda.'], en: ['Role-based access control', 'Everyone can see and change only what their role allows. Permissions are granted and revoked without touching code.'] },
+  { bs: ['Zapis o promjenama', 'Ko je šta promijenio i kada ostaje zabilježeno — za reviziju i za razgovor kad nešto ne štima.'], en: ['Change log', 'Who changed what and when stays recorded — for audits and for the conversation when something looks wrong.'] },
+  { bs: ['Rezervne kopije i oporavak', 'Redovne kopije i dogovoren plan vraćanja podataka. Sistem ne zavisi od jednog računara.'], en: ['Backups and recovery', 'Regular backups and an agreed restore plan. The system does not depend on a single machine.'] },
+  { bs: ['Enkripcija u prijenosu', 'Podaci putuju zaštićenim kanalom (HTTPS/TLS). Osjetljivi podaci se ne šalju otvorenim putem.'], en: ['Encryption in transit', 'Data travels through a protected channel (HTTPS/TLS). Sensitive data is not sent in the open.'] },
+  { bs: ['Odvojeno testno okruženje', 'Nove izmjene prvo prolaze test, pa tek onda idu u rad — bez rizika za svakodnevni posao.'], en: ['Separate test environment', 'New changes are tested first, then released — without risk to daily operations.'] },
+  { bs: ['Nadzor prijava i kritičnih radnji', 'Prijave i kritične radnje se evidentiraju, a sumnjive aktivnosti se mogu pregledati.'], en: ['Login and critical-action monitoring', 'Logins and critical actions are recorded, and suspicious activity can be reviewed.'] }
+];
+---
+
+<section class="section" id="sigurnost">
+  <div class="shell">
+    <div class="section-head">
+      <h2 data-bs="Sigurnost i pouzdanost" data-en="Security and reliability">Sigurnost i pouzdanost</h2>
+      <p data-bs="Sistem koji drži cijelu firmu mora biti predvidiv. Ovo su mjere koje ugrađujemo — tačan obim potvrđujemo prije početka, za vaš konkretan slučaj." data-en="A system that runs the whole company must be predictable. These are the measures we build in — we confirm the exact scope before we start, for your specific case.">
+        Sistem koji drži cijelu firmu mora biti predvidiv. Ovo su mjere koje ugrađujemo — tačan obim potvrđujemo prije početka, za vaš konkretan slučaj.
+      </p>
+    </div>
+
+    <div class="security-grid">
+      {items.map((it) => (
+        <div class="security-item">
+          <h3 data-bs={it.bs[0]} data-en={it.en[0]}>{it.bs[0]}</h3>
+          <p data-bs={it.bs[1]} data-en={it.en[1]}>{it.bs[1]}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="security-note" data-bs="Ne tvrdimo certifikate koje nemamo. Ako vam treba određeni standard ili proces, recite nam — pa ćemo reći šta možemo potvrditi, a šta ne." data-en="We do not claim certificates we do not hold. If you need a specific standard or process, tell us — and we will say what we can confirm and what we cannot.">
+      Ne tvrdimo certifikate koje nemamo. Ako vam treba određeni standard ili proces, recite nam — pa ćemo reći šta možemo potvrditi, a šta ne.
+    </p>
+  </div>
+</section>

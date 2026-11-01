@@ -1,0 +1,172 @@
+/* ============================================================
+   SHADOWDEV — JOURNEY LAYER
+   Fixed 3D world, station rail, telemetry, fallbacks
+   ============================================================ */
+
+/* world (fixed behind content) */
+.world {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 30%, rgba(16, 17, 24, 0.9), var(--void) 70%),
+    var(--void);
+}
+
+.world-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out);
+}
+.world.is-ready .world-canvas { opacity: 1; }
+
+/* subtle grid atmosphere (also acts as no-3D fallback background) */
+.world::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 88px 88px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 78%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 20%, transparent 78%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.world.is-out { opacity: 0.35; transition: opacity 800ms var(--ease); }
+
+/* no WebGL / reduced motion: hide canvas, keep atmosphere */
+html.no-3d .world-canvas { display: none; }
+html.no-3d .rail,
+html.no-3d .telemetry { display: none; }
+html:not(.js) .rail,
+html:not(.js) .telemetry { display: none; }
+html.no-3d .world::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 75%, var(--ember-soft), transparent 42%);
+  opacity: 0.6;
+}
+
+/* main sits above the world */
+main, .site-footer { position: relative; z-index: 1; }
+
+/* solid block after the journey covers the canvas */
+.after {
+  position: relative;
+  z-index: 1;
+  background: var(--void);
+}
+
+/* ============ STATION ACTIVE STATE ============ */
+.station .station-index { transition: color var(--t-ui) var(--ease); }
+.station.is-active .station-index { color: var(--ember); }
+.station .station-kind { transition: color var(--t-ui) var(--ease); }
+.station.is-active .station-kind { color: var(--signal); }
+
+/* ============ RAIL (desktop) ============ */
+.rail {
+  position: fixed;
+  left: max(1rem, calc((100vw - var(--maxw)) / 2 - 3.4rem));
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  pointer-events: none;
+}
+@media (min-width: 1360px) { .rail { display: flex; } }
+
+.rail-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  color: var(--ash);
+}
+.rail-track {
+  position: relative;
+  width: 1px;
+  height: 190px;
+  background: var(--line-2);
+}
+.rail-track .rail-fill {
+  position: absolute;
+  left: -0.5px;
+  top: 0;
+  width: 2px;
+  height: 0;
+  background: var(--ember);
+}
+.rail-list { list-style: none; display: flex; flex-direction: column; gap: 1.05rem; }
+.rail-list a {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ash);
+  transition: color var(--t-fast) var(--ease);
+}
+.rail-list a:hover { color: var(--bone); }
+.rail-list a.is-active { color: var(--ember); }
+
+/* ============ TELEMETRY (desktop) ============ */
+.telemetry {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.65rem max(var(--gutter), env(safe-area-inset-left)) calc(0.65rem + env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-right));
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: linear-gradient(to top, var(--void-88), transparent);
+  pointer-events: none;
+}
+@media (min-width: 900px) { .telemetry { display: flex; } }
+
+.tele-bar { flex: 1; height: 1px; background: var(--line-2); position: relative; }
+.tele-bar i { position: absolute; inset: 0; width: 0; background: var(--ember); }
+.tele-value { color: var(--bone); min-width: 3.2em; }
+.tele-station { color: var(--signal); min-width: 12em; text-align: right; }
+
+/* ============ JOURNEY BLOCK ============ */
+#journey { position: relative; }
+
+/* station plates: keep the 3D visible, text legible */
+.station, .convergence, .hero, .intro {
+  /* content above canvas */
+  position: relative;
+}
+
+/* ensure the scrim sits behind text but above canvas */
+.station > .shell { position: relative; z-index: 1; }
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  .world-canvas { display: none; }
+  .telemetry, .rail { display: none; }
+}

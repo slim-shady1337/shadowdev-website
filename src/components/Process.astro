@@ -1,0 +1,35 @@
+---
+// Proces — 4 koraka s linijom koja se crta pri skrolu
+const steps = [
+  { num: '01', title: 'Otkriće', text: 'Slušamo, analiziramo vaše procese i definišemo ciljeve i mjerljive rezultate.' },
+  { num: '02', title: 'Dizajn', text: 'Oblikujemo rješenje — arhitekturu, prototip i korisničko iskustvo po mjeri.' },
+  { num: '03', title: 'Razvoj', text: 'Gradimo agilno, u iteracijama, uz kontinuirano testiranje i transparentnu komunikaciju.' },
+  { num: '04', title: 'Lansiranje', text: 'Puštamo u produkciju, pratimo performanse i pružamo podršku i nadogradnje.' },
+];
+---
+
+<section class="section" id="proces">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <div>
+        <span class="eyebrow">Proces</span>
+        <h2 class="section-title">Kako <span class="accent">radimo</span></h2>
+      </div>
+      <p class="section-subtitle">Transparentan proces u četiri koraka — od prve ideje do mjerljivih rezultata.</p>
+    </div>
+
+    <div class="process-line" id="process-line" aria-hidden="true">
+      <div class="fill" id="process-line-fill"></div>
+    </div>
+
+    <div class="process-grid">
+      {steps.map((step, i) => (
+        <div class="process-step" data-reveal style={`--reveal-i: ${i}`}>
+          <span class="num">{step.num}</span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
