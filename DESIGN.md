@@ -64,6 +64,8 @@ No border radius anywhere. No drop shadows. Depth comes from the surface colour,
 
 **Nav** — fixed, 66 px, themed from the surface under it (`data-nav="iron" | "paper"`); colour mark + wordmark on iron, ink pair on vellum. Links lose the underline and gain a 1 px orange baseline on hover.
 
+**Hero figure** — the Hub from `@lucasmarkes/hairline`: one core, eight modules on dashed links; the module under the pointer rises and its link turns solid. It is the hero's only image, drawn in the page's ink through the library's six custom properties, set on `.hero__figure`: `--hairline-plate #0b0d0e` (must equal the ground — it masks what the drawing hides behind itself), `--hairline-hi #ff5e1f` (the lit module and its link), `--hairline-edge #a7adb1`, `--hairline-mid #6e767a`, `--hairline-lo rgba(140,146,152,.34)`, `--hairline-stroke 1`. `role="img"` and focus come from the library; the label is bilingual. At `intensity .62` it answers a pointer firmly without twitching; under `prefers-reduced-motion` it mounts at `intensity 0` and rests. It fills the upper right above 1100 px and sits above the copy below that. The inline SVG still in the hero is the fallback: it shows only when the figure cannot mount, and alone when scripting is off.
+
 **Station** — 100 svh, text on the left six columns behind a vertical hairline, outlined number and rotated kind label in the gutter, 3D part on the right in the camera's frame.
 
 ## Voice

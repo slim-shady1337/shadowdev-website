@@ -4,6 +4,7 @@
    ========================================================================== */
 
 import type { WorldHandle } from '../three/world';
+import { mountHeroFigure, setHeroFigureLabel } from './hero-figure';
 
 type Lang = 'bs' | 'en';
 
@@ -174,6 +175,14 @@ function mapU(p: number) {
 
 let scrollQueued = false;
 
+/* How far the reader is through the journey, 0 to 1. */
+function journeyProgress() {
+  if (!journey) return 0;
+  const top = journey.offsetTop;
+  const span = Math.max(1, journey.offsetHeight - window.innerHeight);
+  return Math.min(1, Math.max(0, (window.scrollY - top) / span));
+}
+
 function onScrollFrame() {
   scrollQueued = false;
   const y = window.scrollY;
@@ -191,10 +200,7 @@ function onScrollFrame() {
   root.classList.toggle('is-after-journey', y + vh * 0.55 >= afterTop);
 
   if (journey && ruleFill && ruleHead) {
-    const top = journey.offsetTop;
-    const height = journey.offsetHeight - vh;
-    const p = Math.min(1, Math.max(0, (y - top) / Math.max(1, height)));
-    const pct = `${(p * 100).toFixed(2)}%`;
+    const pct = `${(journeyProgress() * 100).toFixed(2)}%`;
     ruleFill.style.width = pct;
     ruleHead.style.left = pct;
   }
@@ -314,6 +320,8 @@ async function bootWorld() {
     narrow: window.innerWidth < 900
   });
   worldHandle = handle;
+  /* the world may mount after the page has already scrolled */
+  handle.setProgress(mapU(journeyProgress()));
 
   const io = new IntersectionObserver(
     (entries) => {
@@ -376,7 +384,34 @@ function bootAnchors() {
 
 document.addEventListener('sd:lang', () => {
   if (activeStation >= 0 && ruleName) ruleName.textContent = stationTitle(activeStation);
+  setHeroFigureLabel(root.lang === 'en' ? HUB_LABEL.en : HUB_LABEL.bs);
 });
+
+/* --------------------------------------------------------------------------
+   Hero figure — the Hub, drawn in the page's ink
+   -------------------------------------------------------------------------- */
+
+const HUB_LABEL = {
+  bs: 'Jezgro i osam povezanih modula; modul pod kursorom se podiže.',
+  en: 'A core with eight connected modules; the module under the pointer rises.'
+};
+
+const heroFigureEl = document.getElementById('hero-figure');
+
+async function bootHeroFigure() {
+  if (!heroFigureEl) return;
+  try {
+    await mountHeroFigure(heroFigureEl, {
+      intensity: prefersReduced ? 0 : 0.62,
+      label: root.lang === 'en' ? HUB_LABEL.en : HUB_LABEL.bs
+    });
+    /* the label may have changed while the chunk was in flight */
+    setHeroFigureLabel(root.lang === 'en' ? HUB_LABEL.en : HUB_LABEL.bs);
+    root.classList.add('has-hero-figure');
+  } catch {
+    root.classList.add('hero-figure-failed');
+  }
+}
 
 /* --------------------------------------------------------------------------
    Contact form
@@ -508,10 +543,24 @@ applyLang(storedLang === 'en' ? 'en' : 'bs');
 bootAnchors();
 computeAnchors();
 onScrollFrame();
+void bootHeroFigure();
 
 if (canRender3d) {
   idle(() => {
     void bootSmoothScroll();
-    void bootWorld();
   });
+
+  /* The hero has no scene of its own any more, so the WebGL world waits until
+     the reader leaves it. Anchored arrivals mount it straight away. */
+  let worldRequested = false;
+  const requestWorld = () => {
+    if (worldRequested) return;
+    worldRequested = true;
+    void bootWorld();
+  };
+  const armWorld = () => {
+    if (window.scrollY > window.innerHeight * 0.3) requestWorld();
+  };
+  window.addEventListener('scroll', armWorld, { passive: true });
+  armWorld();
 }

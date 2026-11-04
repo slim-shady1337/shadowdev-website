@@ -90,7 +90,8 @@ const report = {};
     nav: document.querySelector('.nav__link')?.textContent?.trim(),
     station: document.querySelector('#stanica-1 h2')?.textContent?.trim(),
     pressed: document.querySelector('[data-lang="en"]')?.getAttribute('aria-pressed'),
-    ariaNav: document.querySelector('.nav__links')?.getAttribute('aria-label')
+    ariaNav: document.querySelector('.nav__links')?.getAttribute('aria-label'),
+    figureLabel: document.getElementById('hero-figure')?.getAttribute('aria-label')
   }));
   await page.screenshot({ path: `${OUT}/lang-en.png` });
 

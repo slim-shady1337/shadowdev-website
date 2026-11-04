@@ -20,7 +20,8 @@ Node 22.12+.
 ## Stack
 
 - **Astro 7** — statički sajt, jedan ulaz: `src/pages/index.astro`
-- **Three.js** — scena, lijeno učitana kao zaseban chunk (`world.*.js`, ~570 kB, učitava se tek nakon prvog renderovanja)
+- **Three.js** — scena, lijeno učitana kao zaseban chunk (`world.*.js`, ~570 kB). **Ne učitava se u heroju**: svijet se montira tek kad skrol prođe prvi ekran, jer hero crta SVG figura
+- **@lucasmarkes/hairline** — Hub figura u heroju, zaseban chunk (~17 kB / ~6 kB gzip); crta se u bojama stranice preko `--hairline-*` varijabli
 - **GSAP + ScrollTrigger** — mapiranje skrola na kameru
 - **Lenis** — glatki skrol sinhronizovan sa GSAP tickerom
 - Fontovi se hostuju lokalno (`public/fonts/`), bez treće strane
@@ -34,8 +35,9 @@ src/
   components/            Hero, Legend, Stations, Convergence, Process,
                          Security, Proof, Contact, Footer, Nav
   styles/                tokens.css · base.css · sections.css · journey.css · fonts.css
-  three/world.ts         scena: fragmenti, šest sklopova, jezgro
-  scripts/main.ts        jezik, nav, skrol, lijeno 3D, forma
+  three/world.ts         scena: šest sklopova i jezgro (bez heroja)
+  scripts/main.ts        jezik, nav, skrol, odgođeno 3D, forma
+  scripts/hero-figure.ts Hub figura u heroju (lijeno učitana)
 public/
   fonts/                 Anybody (display), Archivo (tekst), Martian Mono (kodovi)
   brand/                 logo izdvojen iz priloženog lockupa: mark / wordmark / lockup,
@@ -46,10 +48,11 @@ public/
 ## Kako radi putovanje
 
 - `#journey` obuhvata hero → uvod → šest stanica → spajanje.
+- **Hero ne koristi WebGL.** Njegova slika je Hub figura (`@lucasmarkes/hairline`), SVG koja odgovara na pokazivač; crta se u bojama stranice preko `--hairline-*` varijabli. Ako figura ne uspije da se učita, ostaje statični SVG; bez JS-a takođe.
 - Skrol progres se preslikava na putanju kamere preko **sidra** izmjerenih iz DOM-a: centar svake stanice odgovara tački na putanji, pa dio na ekranu uvijek pripada tekstu pored njega (`mapU` u `main.ts`).
 - Šest sklopova je proceduralno: moduli oko jezgra, linija radnih naloga sa impulsima, dijelovi koji se slažu, slojevi prozora, rotirajući telefon, prstenovi dometa.
 - Na kraju se stanice hlade, a šest dijelova kruži oko jezgra i upada u njega.
-- Bez WebGL-a ili uz `prefers-reduced-motion`: scena se ne učitava (`html.no-3d`), dimenziona linija se skriva, sadržaj ostaje potpuno upotrebljiv.
+- Bez WebGL-a ili uz `prefers-reduced-motion`: 3D scena se ne učitava (`html.no-3d`), dimenziona linija se skriva, sadržaj ostaje potpuno upotrebljiv — a hero figura radi i dalje, jer je SVG.
 
 ## Dizajn sistem (kratko)
 

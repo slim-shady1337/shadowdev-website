@@ -304,6 +304,51 @@ html[data-nav='paper'] .nav__on-paper {
   padding-bottom: 6px;
 }
 
+/* --------------------------------------------------------------------------
+   The Hub — a hairline figure, in the world's own ink.
+   --hairline-plate must be the colour the figure sits on: it masks what the
+   drawing hides behind itself, so it is set to the hero's ground.
+   -------------------------------------------------------------------------- */
+
+.hero__figure {
+  position: absolute;
+  top: clamp(84px, 9.5vh, 126px);
+  right: var(--pad);
+  width: min(38vw, 560px);
+  z-index: 1;
+
+  --hairline-plate: #0b0d0e;
+  --hairline-hi: #ff5e1f;
+  --hairline-edge: #a7adb1;
+  --hairline-mid: #6e767a;
+  --hairline-lo: rgba(140, 146, 152, 0.34);
+  --hairline-stroke: 1;
+
+  opacity: 0;
+  transition: opacity 800ms var(--ease);
+}
+
+html.has-hero-figure .hero__figure {
+  opacity: 1;
+}
+
+/* Between the two hero layouts the type column gets tight: the figure moves
+   above the copy instead of competing with it. */
+@media (max-width: 1100px) {
+  .hero__figure {
+    right: auto;
+    left: var(--pad);
+    width: min(64%, 440px);
+  }
+}
+
+@media (max-width: 620px) {
+  .hero__figure {
+    top: 78px;
+    width: 82%;
+  }
+}
+
 .hero__plate-label {
   font-family: var(--f-display);
   font-weight: 700;

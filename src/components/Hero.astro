@@ -4,8 +4,8 @@ import { bi } from '../lib/bi';
 ---
 
 <section class="hero" id="pocetak" aria-labelledby="hero-title">
-  <!-- Static still of the same six artifacts, for visitors without WebGL or
-       with reduced motion. Decorative: the same story is in the copy. -->
+  <!-- Falls back to this drawing when the Hub cannot load, and to it alone
+       when scripting is off. Decorative: the same story is in the copy. -->
   <svg class="hero__still" viewBox="0 0 1000 470" aria-hidden="true" focusable="false">
     <g fill="none" stroke-linecap="square">
       <g transform="translate(20 130) rotate(-7)">
@@ -77,4 +77,7 @@ import { bi } from '../lib/bi';
       <span class="hero__plate-value" {...bi(hero.plateValue)}>{hero.plateValue.bs}</span>
     </div>
   </div>
+
+  <!-- Last in reading order: the heading and the offer come first. -->
+  <div class="hero__figure" id="hero-figure"></div>
 </section>

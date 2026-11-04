@@ -362,78 +362,9 @@ export function mountWorld(canvas: HTMLCanvasElement, opts: WorldOptions): World
   );
   const curveLook = new THREE.CatmullRomCurve3(lookPoints, false, 'catmullrom', 0.35);
 
-  /* ---- hero field: the scattered state ---------------------------------- */
-  const heroGroup = new THREE.Group();
-  scene.add(heroGroup);
-  const rand = mulberry32(41);
-  const docKinds: DocKind[] = ['ledger', 'order', 'chart', 'phone', 'web', 'signal'];
-  const heroParts: { mesh: THREE.Object3D; base: THREE.Vector3; spin: THREE.Vector3; bob: number }[] = [];
-
-  const docSet = mobile ? docKinds.slice(0, 4) : docKinds;
-
-  docSet.forEach((kind, i) => {
-    const tex = docTexture(kind);
-    const mat = new THREE.MeshBasicMaterial({
-      map: tex,
-      transparent: true,
-      opacity: 0.96,
-      depthWrite: false,
-      toneMapped: false,
-      side: THREE.DoubleSide
-    });
-    const w = mobile ? 1.05 : 1.35;
-    const h = (460 / 340) * w;
-    const geo = new THREE.PlaneGeometry(w, h);
-    const mesh = new THREE.Mesh(geo, mat);
-    const border = new THREE.LineSegments(
-      new THREE.EdgesGeometry(geo),
-      new THREE.LineBasicMaterial({ color: STEEL, transparent: true, opacity: 0.34 })
-    );
-    mesh.add(border);
-    const a = (i / docSet.length) * Math.PI * 2 + 0.4;
-    const radius = (mobile ? 5.4 : 6.2) + rand() * 2.4;
-    const base = new THREE.Vector3(
-      Math.cos(a) * radius * (mobile ? 0.9 : 1.15),
-      -2.4 + rand() * 6.0,
-      (mobile ? 2 : 7) - rand() * 8
-    );
-    mesh.position.copy(base);
-    mesh.rotation.set((rand() - 0.5) * 0.5, Math.sin(a) * 0.9, (rand() - 0.5) * 0.22);
-    heroGroup.add(mesh);
-    heroParts.push({
-      mesh,
-      base: base.clone(),
-      spin: new THREE.Vector3((rand() - 0.5) * 0.04, (rand() - 0.5) * 0.05, 0),
-      bob: rand() * Math.PI * 2
-    });
-  });
-
-  for (let i = 0; i < 7; i++) {
-    const w = 0.42 + rand() * 0.72;
-    const geo = chamferBox(w, w * (0.55 + rand() * 0.9), 0.05 + rand() * 0.12, 0.05);
-    const mesh = new THREE.Mesh(geo, i % 3 === 0 ? matPlateDeep : matPlate);
-    const edges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(geo, 18),
-      new THREE.LineBasicMaterial({
-        color: i % 4 === 0 ? HEAT : STEEL,
-        transparent: true,
-        opacity: i % 4 === 0 ? 0.62 : 0.34
-      })
-    );
-    mesh.add(edges);
-    const a = rand() * Math.PI * 2;
-    const radius = 4.5 + rand() * 5.5;
-    const base = new THREE.Vector3(Math.cos(a) * radius, -3 + rand() * 6.5, 8 - rand() * 9);
-    mesh.position.copy(base);
-    mesh.rotation.set(rand() * 3, rand() * 3, rand() * 3);
-    heroGroup.add(mesh);
-    heroParts.push({
-      mesh,
-      base: base.clone(),
-      spin: new THREE.Vector3((rand() - 0.5) * 0.22, (rand() - 0.5) * 0.26, (rand() - 0.5) * 0.1),
-      bob: rand() * Math.PI * 2
-    });
-  }
+  /* The hero's own drawing is no longer part of this scene: it is the Hub
+     figure in the page, drawn in SVG (src/scripts/hero-figure.ts). The camera
+     starts on an empty field and meets the first station as you scroll. */
 
   /* ---- stations ---------------------------------------------------------- */
   type Station = { group: THREE.Group; home: THREE.Vector3; edges: THREE.LineBasicMaterial[]; scale: number };
@@ -756,20 +687,6 @@ export function mountWorld(canvas: HTMLCanvasElement, opts: WorldOptions): World
     camera.position.y += py * 0.35 * (1 - converge) + Math.sin(elapsed * 0.28) * 0.05;
     camera.position.z -= converge * 6;
     camera.lookAt(tmpLook);
-
-    /* hero field: drifts, then leaves the frame before the reading section */
-    const away = smooth(0.01, 0.075, t);
-    heroGroup.visible = t < 0.105;
-    if (heroGroup.visible) {
-      heroGroup.position.z = away * 14;
-      heroGroup.scale.setScalar(1 + away * 0.4);
-      for (const p of heroParts) {
-        p.mesh.position.x = p.base.x + Math.sin(elapsed * 0.32 + p.bob) * 0.16;
-        p.mesh.position.y = p.base.y + Math.cos(elapsed * 0.26 + p.bob) * 0.18;
-        p.mesh.rotation.x += p.spin.x * dt;
-        p.mesh.rotation.y += p.spin.y * dt;
-      }
-    }
 
     /* stations: each part arrives with its section, then cools out of sight */
     const pour = smooth(0.87, 0.965, t);

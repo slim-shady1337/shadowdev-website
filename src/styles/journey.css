@@ -235,13 +235,11 @@ html.js .hero__plate {
    No-WebGL / reduced motion: the page is complete without the camera
    -------------------------------------------------------------------------- */
 
-/* the same six artifacts, drawn once, for visitors who never get the scene */
+/* The still is the fallback, never the default: it appears only when the Hub
+   figure cannot mount, and alone when scripting is off (see the noscript rule
+   in the layout). */
 .hero__still {
   display: none;
-}
-
-html.no-3d .hero__still {
-  display: block;
   position: absolute;
   top: clamp(86px, 10vh, 132px);
   right: 0;
@@ -249,6 +247,10 @@ html.no-3d .hero__still {
   height: auto;
   opacity: 0.92;
   pointer-events: none;
+}
+
+html.hero-figure-failed .hero__still {
+  display: block;
 }
 
 .hero__still .s-plate {
@@ -281,7 +283,7 @@ html.no-3d .hero {
 }
 
 @media (max-width: 900px) {
-  html.no-3d .hero__still {
+  .hero__still {
     top: 84px;
     right: -3%;
     width: 106%;
