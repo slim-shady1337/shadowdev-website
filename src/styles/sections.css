@@ -342,10 +342,44 @@ html.has-hero-figure .hero__figure {
   }
 }
 
-@media (max-width: 620px) {
+/* On a phone the hero is a column, not a stack of layers: the figure sits in
+   the flow above the copy, so a short viewport can push the headline down but
+   can never push it under the drawing. */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: clamp(16px, 3.4vh, 30px);
+    padding-block: 92px clamp(32px, 6vh, 60px);
+  }
+
   .hero__figure {
-    top: 78px;
-    width: 82%;
+    /* relative, not static: the library's svg is inset:0 against its host, so
+       the host must be the positioning context or the drawing fills the hero.
+       The absolute offsets must go, or they would shift it out of its box. */
+    position: relative;
+    inset: auto;
+    order: -1;
+    width: min(62%, 340px);
+    margin-inline: 0;
+  }
+
+  .hero__still {
+    position: static;
+    order: -2;
+    width: 100%;
+    margin-inline: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding-block: 84px clamp(28px, 5vh, 48px);
+  }
+
+  .hero__figure {
+    width: min(66%, 300px);
   }
 }
 

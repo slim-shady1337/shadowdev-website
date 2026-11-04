@@ -283,11 +283,9 @@ html.no-3d .hero {
 }
 
 @media (max-width: 900px) {
+  /* the still is laid out by sections.css on phones (in flow, above the copy) */
   .hero__still {
-    top: 84px;
-    right: -3%;
-    width: 106%;
-    opacity: 0.8;
+    opacity: 0.72;
   }
 
   html.no-3d .hero {
