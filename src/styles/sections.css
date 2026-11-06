@@ -305,24 +305,28 @@ html[data-nav='paper'] .nav__on-paper {
 }
 
 /* --------------------------------------------------------------------------
-   The Hub — a hairline figure, in the world's own ink.
+   Hairline figures — the world's ink, one set of values for every figure.
    --hairline-plate must be the colour the figure sits on: it masks what the
-   drawing hides behind itself, so it is set to the hero's ground.
+   drawing hides behind itself, so it is set to the page ground.
    -------------------------------------------------------------------------- */
 
-.hero__figure {
-  position: absolute;
-  top: clamp(84px, 9.5vh, 126px);
-  right: var(--pad);
-  width: min(38vw, 560px);
-  z-index: 1;
-
+.hero__figure,
+.station__figure {
   --hairline-plate: #0b0d0e;
   --hairline-hi: #ff5e1f;
   --hairline-edge: #a7adb1;
   --hairline-mid: #6e767a;
   --hairline-lo: rgba(140, 146, 152, 0.34);
   --hairline-stroke: 1;
+}
+
+/* The Hub in the hero. */
+.hero__figure {
+  position: absolute;
+  top: clamp(84px, 9.5vh, 126px);
+  right: var(--pad);
+  width: min(38vw, 560px);
+  z-index: 1;
 
   opacity: 0;
   transition: opacity 800ms var(--ease);
@@ -380,6 +384,37 @@ html.has-hero-figure .hero__figure {
 
   .hero__figure {
     width: min(66%, 300px);
+  }
+}
+
+/* A station figure: the right half of the station grid, in the flow, so it can
+   never sit on the copy. position: relative is load-bearing — the library's svg
+   is inset:0 against its host and would otherwise stretch over the section. */
+.station__figure {
+  position: relative;
+  grid-column: 7 / span 6;
+  align-self: center;
+  justify-self: center;
+  width: min(100%, 520px);
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+}
+
+.station__figure[data-figure] {
+  opacity: 1;
+}
+
+.station__figure[data-figure='failed'] {
+  opacity: 0;
+}
+
+@media (max-width: 900px) {
+  .station__figure {
+    grid-column: 1 / -1;
+    order: -1;
+    justify-self: start;
+    width: min(70%, 320px);
+    margin-bottom: var(--stack-2);
   }
 }
 

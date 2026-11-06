@@ -455,22 +455,11 @@ export function mountWorld(canvas: HTMLCanvasElement, opts: WorldOptions): World
     }
   }
 
-  /* 02 — production: a line of work orders with data pulses */
+  /* 02 — production: drawn as the Hairline "Slow" figure in the page
+     (src/scripts/station-figure.ts). The shell stays so station order and the
+     camera anchors keep their indices; it holds no geometry. */
   {
-    const { group, edgeMats } = stationShell(1, 1.28);
-    const railGeo = chamferBox(4.2, 0.1, 0.5, 0.05);
-    addPart(group, edgeMats, railGeo, [0, -0.5, 0]);
-    const pulseGeo = new THREE.BoxGeometry(0.11, 0.11, 0.11);
-    for (let i = 0; i < 16; i++) {
-      const mesh = new THREE.Mesh(pulseGeo, i % 4 === 0 ? matEmber : matHeat);
-      mesh.position.set(-2 + i * 0.27, -0.42, 0);
-      group.add(mesh);
-    }
-    for (let i = 0; i < 4; i++) {
-      const x = -1.5 + i * 1.0;
-      addPart(group, edgeMats, chamferBox(0.7, 0.55, 0.09, 0.08), [x, 0.32, 0], [0, 0, 0], i === 2);
-      addPart(group, edgeMats, chamferBox(0.05, 0.85, 0.05, 0.02), [x, -0.05, 0.16]);
-    }
+    stationShell(1, 1.28);
   }
 
   /* 03 — custom: scattered parts stack into one part as the section passes */

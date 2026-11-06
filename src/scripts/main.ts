@@ -5,6 +5,7 @@
 
 import type { WorldHandle } from '../three/world';
 import { mountHeroFigure, setHeroFigureLabel } from './hero-figure';
+import { mountMesFigure } from './station-figure';
 
 type Lang = 'bs' | 'en';
 
@@ -414,6 +415,17 @@ async function bootHeroFigure() {
 }
 
 /* --------------------------------------------------------------------------
+   Station figures — the parts drawn as Hairline figures
+   -------------------------------------------------------------------------- */
+
+const mesFigureEl = document.getElementById('station-figure-2');
+
+function bootStationFigures() {
+  if (!mesFigureEl) return;
+  mountMesFigure(mesFigureEl, { intensity: prefersReduced ? 0 : 0.6 });
+}
+
+/* --------------------------------------------------------------------------
    Contact form
    -------------------------------------------------------------------------- */
 
@@ -544,6 +556,7 @@ bootAnchors();
 computeAnchors();
 onScrollFrame();
 void bootHeroFigure();
+bootStationFigures();
 
 if (canRender3d) {
   idle(() => {

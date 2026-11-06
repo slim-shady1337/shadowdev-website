@@ -29,6 +29,10 @@ import { bi } from '../lib/bi';
           </a>
         </div>
       </div>
+
+      {/* After the copy in the DOM so the heading is read first; on phones it
+          is pulled above with `order`. */}
+      {s.n === 2 && <div class="station__figure" id="station-figure-2"></div>}
     </div>
   </section>
 ))}
