@@ -320,6 +320,14 @@ html[data-nav='paper'] .nav__on-paper {
   --hairline-stroke: 1;
 }
 
+/* The figure box is 5:4 whether or not a figure is mounted in it. Without this
+   the host collapses to nothing when a figure is torn down after its section
+   leaves, and the page jumps by the drawing's height. */
+.hero__figure,
+.station__figure {
+  aspect-ratio: 5 / 4;
+}
+
 /* The Hub in the hero. */
 .hero__figure {
   position: absolute;
