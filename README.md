@@ -108,6 +108,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - 375 / 768 / 1440 px: nema horizontalnog prelijevanja, nema grešaka u konzoli.
 - Svih šest stanica: figura montirana, **bez preklapanja s tekstom**, ispravna strana (1–2 i 4 figura desno, 3, 5 i 6 lijevo), na telefonu centrirana iznad teksta.
 - Figure se gase kad sekcija izađe iz vidnog polja (provjereno za sve šest).
+- **Figura odradi jedan krug sama** kad njena stanica dođe u centar ekrana (provjereno snimkama: pokretna za vrijeme kruga, mirna poslije). Ne ponavlja se dok se stanica ne napusti i ponovo posjeti.
+- **Brojanje sklopa radi u oba smjera**: 00 na početku, 01–06 kod stanica, 00 i skrivena traka na spajanju, i ispravno nazad 06 → 03 → 01 → 00.
+- **Svaki nav link doskoči na 92 px** (25 px ispod navigacije), isto i za native skok preko `scroll-margin-top`.
 - LCP ~900–1030 ms; CLS 0.0003 / 0.0001.
 - `prefers-reduced-motion`: figure se montiraju sa `intensity 0`, animacije ulaza isključene, skrol native.
 - Forma: prazno slanje → 4 greške, fokus na prvom polju; ispravno slanje → potvrda, fokus na potvrdi (uz simuliran 200 odgovor).

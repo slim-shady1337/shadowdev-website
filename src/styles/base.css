@@ -96,6 +96,12 @@ a {
    Layout primitives
    -------------------------------------------------------------------------- */
 
+/* Anything a link can jump to clears the fixed header, so a native jump lands
+   with the same air as the smooth one. */
+main [id] {
+  scroll-margin-top: 92px;
+}
+
 .shell {
   width: 100%;
   max-width: var(--maxw);

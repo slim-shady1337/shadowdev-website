@@ -3,6 +3,9 @@
    Each host mounts only while its section is near the viewport (some figures
    keep a clock running) and is torn down when it leaves, so a station you have
    passed costs nothing. One chunk for the package, tree-shaken to six figures.
+
+   Each figure plays its own lap once, when its station is the one the reader
+   is looking at, then rests until the page is reloaded.
    ========================================================================== */
 
 import type { Figure } from '@lucasmarkes/hairline';
@@ -54,15 +57,43 @@ async function load(id: StationFigureId) {
   }
 }
 
-type Entry = { id: StationFigureId; figure: Figure | null; wanted: boolean; loading: boolean };
+/** How long one lap of a figure's own tour is given before it is asked to rest. */
+const LAP_MS = 7000;
+
+type Entry = {
+  id: StationFigureId;
+  figure: Figure | null;
+  wanted: boolean;
+  loading: boolean;
+  played: boolean;
+  autoplayWanted: boolean;
+};
+
+const entries = new Map<HTMLElement, Entry>();
+const lapTimers = new WeakMap<HTMLElement, number>();
+let reducedMotion = false;
+
+function startLap(host: HTMLElement, entry: Entry): void {
+  if (!entry.figure || entry.played) return;
+  entry.played = true;
+  entry.autoplayWanted = false;
+  entry.figure.update({ play: true });
+  const timer = window.setTimeout(() => {
+    entry.figure?.update({ play: false });
+    lapTimers.delete(host);
+  }, LAP_MS);
+  lapTimers.set(host, timer);
+}
 
 export function mountStationFigures(hosts: HTMLElement[], intensity: number): void {
   if (!hosts.length) return;
+  reducedMotion = intensity === 0;
 
-  const entries = new Map<HTMLElement, Entry>();
   for (const el of hosts) {
     const id = el.dataset.figureId as StationFigureId | undefined;
-    if (id && id in LABEL) entries.set(el, { id, figure: null, wanted: false, loading: false });
+    if (id && id in LABEL) {
+      entries.set(el, { id, figure: null, wanted: false, loading: false, played: false, autoplayWanted: false });
+    }
   }
 
   const label = (id: StationFigureId) =>
@@ -77,6 +108,8 @@ export function mountStationFigures(hosts: HTMLElement[], intensity: number): vo
         if (!entry.wanted) return;
         entry.figure = make(el, { intensity, label: label(entry.id), play: false });
         el.dataset.figure = entry.id;
+        /* the reader may have arrived before the chunk did */
+        if (entry.autoplayWanted) startLap(el, entry);
       } catch {
         entry.loading = false;
         el.dataset.figure = 'failed';
@@ -86,6 +119,12 @@ export function mountStationFigures(hosts: HTMLElement[], intensity: number): vo
     if (!entry.wanted && entry.figure) {
       entry.figure.destroy();
       entry.figure = null;
+      entry.played = false;
+      const timer = lapTimers.get(el);
+      if (timer) {
+        window.clearTimeout(timer);
+        lapTimers.delete(el);
+      }
       delete el.dataset.figure;
     }
   }
@@ -109,4 +148,24 @@ export function mountStationFigures(hosts: HTMLElement[], intensity: number): vo
       if (entry.figure) entry.figure.update({ label: label(entry.id) });
     }
   });
+}
+
+/**
+ * Play one lap of the figure's own choreography, once, when its station is the
+ * one the reader is looking at. The library stops the lap itself as soon as the
+ * pointer or focus arrives; the timer is only the outer bound.
+ */
+export function playStationFigureOnce(station: Element | null): void {
+  if (!station || reducedMotion) return;
+  const host = station.querySelector<HTMLElement>('[data-station-figure]');
+  if (!host) return;
+  const entry = entries.get(host);
+  if (!entry || entry.played) return;
+
+  if (!entry.figure) {
+    /* not mounted yet: remember it and let sync() start the lap on mount */
+    entry.autoplayWanted = true;
+    return;
+  }
+  startLap(host, entry);
 }

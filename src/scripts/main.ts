@@ -4,7 +4,7 @@
    ========================================================================== */
 
 import { mountHeroFigure, setHeroFigureLabel } from './hero-figure';
-import { mountStationFigures } from './station-figure';
+import { mountStationFigures, playStationFigureOnce } from './station-figure';
 
 type Lang = 'bs' | 'en';
 
@@ -114,6 +114,7 @@ const ruleName = document.getElementById('dimrule-name');
 const stationEls = Array.from(document.querySelectorAll<HTMLElement>('[data-station]'));
 
 let activeStation = -1;
+const START_LABEL = 'Početak';
 
 function stationTitle(index: number) {
   const el = stationEls[index]?.querySelector('h2');
@@ -124,8 +125,34 @@ function setActiveStation(index: number) {
   if (index === activeStation) return;
   activeStation = index;
   stationEls.forEach((el, i) => el.classList.toggle('is-active', i === index));
-  if (ruleName) ruleName.textContent = index >= 0 ? stationTitle(index) : '';
+  if (ruleName) ruleName.textContent = index >= 0 ? stationTitle(index) : START_LABEL;
   if (ruleValue) ruleValue.textContent = index >= 0 ? `0${index + 1}` : '00';
+}
+
+/* Which station the reader is actually looking at: whichever sits nearest the
+   middle of the viewport, in both scroll directions. An IntersectionObserver
+   only fires on entry, which left the counter stuck on the last station after
+   scrolling back up. */
+function updateActiveStation() {
+  if (!stationEls.length) return;
+  const mid = window.innerHeight * 0.5;
+  let best = Infinity;
+  let index = -1;
+
+  stationEls.forEach((el, i) => {
+    const rect = el.getBoundingClientRect();
+    const distance = Math.abs(rect.top + rect.height / 2 - mid);
+    if (distance < best) {
+      best = distance;
+      index = i;
+    }
+  });
+
+  const next = best < window.innerHeight * 0.55 ? index : -1;
+  if (next !== activeStation) {
+    setActiveStation(next);
+    if (next >= 0) playStationFigureOnce(stationEls[next]);
+  }
 }
 
 let scrollQueued = false;
@@ -159,6 +186,8 @@ function onScrollFrame() {
     ruleFill.style.width = pct;
     ruleHead.style.left = pct;
   }
+
+  updateActiveStation();
 }
 
 function onScroll() {
@@ -169,24 +198,6 @@ function onScroll() {
 
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', onScroll, { passive: true });
-
-/* --------------------------------------------------------------------------
-   Stations: which part is in front of the reader
-   -------------------------------------------------------------------------- */
-
-if (stationEls.length) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const idx = stationEls.indexOf(entry.target as HTMLElement);
-        if (idx >= 0) setActiveStation(idx);
-      }
-    },
-    { rootMargin: '-46% 0px -46% 0px', threshold: 0 }
-  );
-  stationEls.forEach((el) => io.observe(el));
-}
 
 /* --------------------------------------------------------------------------
    Diagram: leader lines draw once
@@ -251,7 +262,9 @@ function bootAnchors() {
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
-      if (lenis) lenis.scrollTo(target, { offset: -72, duration: 1.15 });
+      /* the clearance comes from scroll-margin-top, so native and smooth
+         scrolling land in exactly the same place */
+      if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.15 });
       else target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
       window.setTimeout(
         () => {
