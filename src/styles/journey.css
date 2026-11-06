@@ -1,9 +1,8 @@
 /* ==========================================================================
-   Journey: the fixed 3D field, the dimension rule, entry choreography
+   Journey: the fixed field, the dimension rule, entry choreography
    ========================================================================== */
 
-/* The field is CSS, always present. The canvas clears to transparent and draws
-   over it, so the atmosphere survives a WebGL failure for free. */
+/* The ground is CSS: one field behind the whole journey. */
 .field {
   position: fixed;
   inset: 0;
@@ -24,38 +23,8 @@
   transition: opacity 600ms var(--ease);
 }
 
-.world {
-  position: fixed;
-  inset: 0;
-  z-index: var(--z-world);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 600ms var(--ease);
-}
-
-.world canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-html.is-3d .world {
-  opacity: 1;
-}
-
-/* the legend is a reading moment: the scene steps back */
-html.is-quiet .world {
-  opacity: 0.18;
-}
-
-html.is-after-journey .world,
 html.is-after-journey .field {
   opacity: 0;
-}
-
-/* When the journey is gone there is nothing to measure. */
-html.no-3d .dimrule {
-  display: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -277,26 +246,11 @@ html.hero-figure-failed .hero__still {
   fill: rgba(255, 94, 31, 0.16);
 }
 
-html.no-3d .hero {
-  min-height: 82svh;
-  padding-block: 132px 72px;
-}
-
 @media (max-width: 900px) {
   /* the still is laid out by sections.css on phones (in flow, above the copy) */
   .hero__still {
     opacity: 0.72;
   }
-
-  html.no-3d .hero {
-    min-height: 100svh;
-    padding-block: 118px 56px;
-  }
-}
-
-html.no-3d .station {
-  min-height: auto;
-  padding-block: var(--stack-4);
 }
 
 html.reduced .hero__title,

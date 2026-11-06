@@ -1,38 +1,52 @@
 ---
 import { nav, stations } from '../content/site';
 import { bi } from '../lib/bi';
+
+/* Which figure draws each station, and which side the copy takes.
+   Desktop: 1–2 copy left, 3 copy right, 4 copy left, 5–6 copy right. */
+const FIGURES: Record<number, { id: string; flip: boolean }> = {
+  1: { id: 'relay', flip: false },
+  2: { id: 'slow', flip: false },
+  3: { id: 'settle', flip: true },
+  4: { id: 'exploded', flip: false },
+  5: { id: 'phone', flip: true },
+  6: { id: 'dish', flip: true }
+};
 ---
 
-{stations.map((s) => (
-  <section
-    class="station"
-    id={`stanica-${s.n}`}
-    data-station={s.n}
-    aria-labelledby={`station-title-${s.n}`}
-  >
-    <div class="shell station__grid">
-      <div class="station__body">
-        <div class="station__index">
-          <span class="station__num">{String(s.n).padStart(2, '0')}</span>
-          <span class="station__kind" {...bi(s.kind)}>{s.kind.bs}</span>
+{stations.map((s) => {
+  const fig = FIGURES[s.n];
+  return (
+    <section
+      class:list={['station', fig?.flip && 'station--flip']}
+      id={`stanica-${s.n}`}
+      data-station={s.n}
+      aria-labelledby={`station-title-${s.n}`}
+    >
+      <div class="shell station__grid">
+        <div class="station__body">
+          <div class="station__index">
+            <span class="station__num">{String(s.n).padStart(2, '0')}</span>
+            <span class="station__kind" {...bi(s.kind)}>{s.kind.bs}</span>
+          </div>
+
+          <div class="station__copy">
+            <h2 id={`station-title-${s.n}`} class="u-display station__title" {...bi(s.title)}>
+              {s.title.bs}
+            </h2>
+            <p class="station__lead" {...bi(s.lead)}>{s.lead.bs}</p>
+            <p class="station__text" {...bi(s.body)}>{s.body.bs}</p>
+            <p class="station__terms" {...bi(s.terms)}>{s.terms.bs}</p>
+            <a class="btn btn--ghost station__action" href={s.href}>
+              <span class="btn__face" {...bi(nav.cta)}>{nav.cta.bs}</span>
+            </a>
+          </div>
         </div>
 
-        <div class="station__copy">
-          <h2 id={`station-title-${s.n}`} class="u-display station__title" {...bi(s.title)}>
-            {s.title.bs}
-          </h2>
-          <p class="station__lead" {...bi(s.lead)}>{s.lead.bs}</p>
-          <p class="station__text" {...bi(s.body)}>{s.body.bs}</p>
-          <p class="station__terms" {...bi(s.terms)}>{s.terms.bs}</p>
-          <a class="btn btn--ghost station__action" href={s.href}>
-            <span class="btn__face" {...bi(nav.cta)}>{nav.cta.bs}</span>
-          </a>
-        </div>
+        {/* After the copy in the DOM so the heading is read first; on phones it
+            is pulled above with `order`. */}
+        {fig && <div class="station__figure" data-station-figure data-figure-id={fig.id} />}
       </div>
-
-      {/* After the copy in the DOM so the heading is read first; on phones it
-          is pulled above with `order`. */}
-      {s.n === 2 && <div class="station__figure" id="station-figure-2"></div>}
-    </div>
-  </section>
-))}
+    </section>
+  );
+})}

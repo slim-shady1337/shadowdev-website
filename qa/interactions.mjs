@@ -152,12 +152,12 @@ const report = {};
   await page.goto(URL, { waitUntil: 'domcontentloaded' });
   await new Promise((r) => setTimeout(r, 900));
   report.reduced = await page.evaluate(() => ({
-    no3d: document.documentElement.classList.contains('no-3d'),
     reduced: document.documentElement.classList.contains('reduced'),
-    worldOpacity: getComputedStyle(document.querySelector('.world')).opacity,
     dimrule: getComputedStyle(document.querySelector('.dimrule')).display,
+    heroFigure: !!document.querySelector('#hero-figure svg'),
     heroVisible: document.querySelector('.hero__title')?.getBoundingClientRect().height > 10,
-    stations: document.querySelectorAll('[data-station]').length
+    stations: document.querySelectorAll('[data-station]').length,
+    mountedFigures: document.querySelectorAll('[data-hairline]').length
   }));
   await page.screenshot({ path: `${OUT}/reduced-hero.png` });
   await page.close();

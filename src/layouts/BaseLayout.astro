@@ -99,22 +99,7 @@ const jsonLd = {
         try {
           reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         } catch (e) {}
-        if (reduce) {
-          d.classList.add('reduced', 'no-3d');
-          return;
-        }
-        try {
-          var c = document.createElement('canvas');
-          var gl = c.getContext('webgl2') || c.getContext('webgl');
-          if (!gl) {
-            d.classList.add('no-3d');
-          } else {
-            var lose = gl.getExtension('WEBGL_lose_context');
-            if (lose) lose.loseContext();
-          }
-        } catch (e) {
-          d.classList.add('no-3d');
-        }
+        if (reduce) d.classList.add('reduced');
       })();
     </script>
   </head>
@@ -123,9 +108,6 @@ const jsonLd = {
     <a class="skip" href="#main" data-bs={nav.skip.bs} data-en={nav.skip.en}>{nav.skip.bs}</a>
 
     <div class="field" aria-hidden="true"></div>
-    <div class="world" aria-hidden="true">
-      <canvas id="world-canvas"></canvas>
-    </div>
 
     <Nav />
 

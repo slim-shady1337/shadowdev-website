@@ -20,11 +20,11 @@ Node 22.12+.
 ## Stack
 
 - **Astro 7** — statički sajt, jedan ulaz: `src/pages/index.astro`
-- **Three.js** — scena, lijeno učitana kao zaseban chunk (`world.*.js`, ~570 kB). **Ne učitava se u heroju**: svijet se montira tek kad skrol prođe prvi ekran, jer hero crta SVG figura
-- **@lucasmarkes/hairline** — Hub figura u heroju i „Slow" figura u stanici 2; isti chunk (~17 kB / ~6 kB gzip), crtaju se u bojama stranice preko `--hairline-*` varijabli
-- **GSAP + ScrollTrigger** — mapiranje skrola na kameru
-- **Lenis** — glatki skrol sinhronizovan sa GSAP tickerom
+- **@lucasmarkes/hairline** — sve slike na stranici: Hub u heroju + šest figura za stanice. Jedan lijeno učitan chunk (~118 kB / ~30 kB gzip), crta se u bojama stranice preko `--hairline-*` varijabli
+- **Lenis** — glatki skrol (bez njega se skroluje native)
 - Fontovi se hostuju lokalno (`public/fonts/`), bez treće strane
+
+**Nema WebGL-a.** Tri.js i GSAP su izbačeni zajedno sa 3D scenom — ukupan JS je ~147 kB nekompresovano (prije ~700 kB).
 
 ## Struktura
 
@@ -35,10 +35,9 @@ src/
   components/            Hero, Legend, Stations, Convergence, Process,
                          Security, Proof, Contact, Footer, Nav
   styles/                tokens.css · base.css · sections.css · journey.css · fonts.css
-  three/world.ts         scena: šest sklopova i jezgro (bez heroja)
-  scripts/main.ts        jezik, nav, skrol, odgođeno 3D, forma
+  scripts/main.ts        jezik, nav, skrol, forma
   scripts/hero-figure.ts Hub figura u heroju (lijeno učitana)
-  scripts/station-figure.ts figura stanice 2 — montira se samo dok je sekcija blizu
+  scripts/station-figure.ts šest figura — svaka se montira samo dok je sekcija blizu
 public/
   fonts/                 Anybody (display), Archivo (tekst), Martian Mono (kodovi)
   brand/                 logo izdvojen iz priloženog lockupa: mark / wordmark / lockup,
@@ -48,13 +47,14 @@ public/
 
 ## Kako radi putovanje
 
-- `#journey` obuhvata hero → uvod → šest stanica → spajanje.
-- **Hero ne koristi WebGL.** Njegova slika je Hub figura (`@lucasmarkes/hairline`), SVG koja odgovara na pokazivač; crta se u bojama stranice preko `--hairline-*` varijabli. Ako figura ne uspije da se učita, ostaje statični SVG; bez JS-a takođe.
-- Skrol progres se preslikava na putanju kamere preko **sidra** izmjerenih iz DOM-a: centar svake stanice odgovara tački na putanji, pa dio na ekranu uvijek pripada tekstu pored njega (`mapU` u `main.ts`).
-- **Stanica 2 (Proizvodnja) je figura, ne 3D.** Njen 3D sklop je ugašen (prazan „shell" ostaje da bi redoslijed i sidra zadržali indekse), a desnu polovinu crta „Slow" figura. Montira se samo dok je sekcija blizu ekrana i gasi kad je prođeš, jer ta figura ima sat koji stalno radi.
-- Ostalih pet sklopova je proceduralno: moduli oko jezgra, dijelovi koji se slažu, slojevi prozora, rotirajući telefon, prstenovi dometa.
-- Na kraju se stanice hlade, a šest dijelova kruži oko jezgra i upada u njega.
-- Bez WebGL-a ili uz `prefers-reduced-motion`: 3D scena se ne učitava (`html.no-3d`), dimenziona linija se skriva, sadržaj ostaje potpuno upotrebljiv — a hero figura radi i dalje, jer je SVG.
+- `#journey` obuhvata hero → uvod → šest stanica → spajanje. Skrol vodi kroz crteže; nema kamere.
+- **Hero**: Hub figura — jezgro i osam modula; modul pod pokazivačem se podiže. Ako figura ne uspije da se učita, ostaje statični SVG; bez JS-a takođe.
+- **Stanice 1–6** su figure: Relay, Slow, Settle, Exploded, Phone, Dish. Svaka se **montira samo dok je sekcija blizu ekrana** i gasi kad je prođeš (neke imaju sat koji stalno radi), pa prođena stanica ne košta ništa.
+- **Naizmjeničan raspored** da šest stanica ne izgleda kao jedan te isti šablon: 1 i 2 tekst lijevo, 3 tekst desno, 4 lijevo, 5 i 6 desno. Figure su uvijek centrirane u svojoj polovini.
+- **Na telefonu** je svaka stanica kolona: figura centrirana iznad teksta, nikad preko njega.
+- Sekcije su visine sadržaja (ne 100svh), da između crteža ne ostaje prazan pojas.
+- Završnica je SVG dijagram: šest čvorova oko jezgra.
+- Uz `prefers-reduced-motion`: figure se montiraju sa `intensity 0` (miruju), animacije ulaza su isključene, skrol je native.
 
 ## Dizajn sistem (kratko)
 
@@ -106,19 +106,20 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 **Provjereno** (produkcijski build, stvarni Chrome, headless):
 - 375 / 768 / 1440 px: nema horizontalnog prelijevanja, nema grešaka u konzoli.
-- LCP 896 ms (1440) i 896 ms (375); CLS 0.0003 / 0.0001.
-- `prefers-reduced-motion`: `no-3d`, dimenziona linija skrivena, sadržaj čitljiv.
-- Bez WebGL-a: stranica radi, `no-3d`, hero 738 px.
-- Forma: prazno slanje → 4 greške, fokus na prvom polju; ispravno slanje → potvrda, fokus na potvrdi. Slanje je testirano uz simuliran 200 odgovor.
-- BS/EN prekidač: `lang`, naslov, `h1`, navigacija, `aria-label` se mijenjaju.
+- Svih šest stanica: figura montirana, **bez preklapanja s tekstom**, ispravna strana (1–2 i 4 figura desno, 3, 5 i 6 lijevo), na telefonu centrirana iznad teksta.
+- Figure se gase kad sekcija izađe iz vidnog polja (provjereno za sve šest).
+- LCP ~900–1030 ms; CLS 0.0003 / 0.0001.
+- `prefers-reduced-motion`: figure se montiraju sa `intensity 0`, animacije ulaza isključene, skrol native.
+- Forma: prazno slanje → 4 greške, fokus na prvom polju; ispravno slanje → potvrda, fokus na potvrdi (uz simuliran 200 odgovor).
+- BS/EN prekidač: `lang`, naslov, `h1`, navigacija, `aria-label` i labele figura se mijenjaju.
 - Mobilni meni: `aria-expanded`, `inert`, Escape, povratak fokusa.
 - Impeccable detektor: 0 nalaza.
 
 **Nije provjereno:**
-- 60 fps na stvarnom hardveru — QA browser koristi SwiftShader (softverski WebGL), pa frame rate nije mjerljiv.
 - Safari / iOS i Firefox nisu testirani.
 - Stvarno slanje forme na Netlify-ju (lokalno je odgovor simuliran).
 - Lighthouse/PSI na mreži.
+- Frame rate na slabijim telefonima (nema više WebGL-a, ali figure imaju SVG animacije dok je pokazivač na njima).
 
 ## PLACEHOLDERI — popuniti prije objave
 

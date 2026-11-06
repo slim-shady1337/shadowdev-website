@@ -365,8 +365,8 @@ html.has-hero-figure .hero__figure {
     position: relative;
     inset: auto;
     order: -1;
-    width: min(62%, 340px);
-    margin-inline: 0;
+    width: min(70%, 360px);
+    margin-inline: auto;
   }
 
   .hero__still {
@@ -387,17 +387,23 @@ html.has-hero-figure .hero__figure {
   }
 }
 
-/* A station figure: the right half of the station grid, in the flow, so it can
-   never sit on the copy. position: relative is load-bearing — the library's svg
-   is inset:0 against its host and would otherwise stretch over the section. */
+/* A station figure: the half of the station grid the copy is not using, in the
+   flow, so it can never sit on the text. position: relative is load-bearing —
+   the library's svg is inset:0 against its host and would otherwise stretch
+   over the whole section. */
 .station__figure {
   position: relative;
   grid-column: 7 / span 6;
+  grid-row: 1;
   align-self: center;
   justify-self: center;
-  width: min(100%, 520px);
+  width: min(100%, 600px);
   opacity: 0;
   transition: opacity 600ms var(--ease);
+}
+
+.station--flip .station__figure {
+  grid-column: 1 / span 6;
 }
 
 .station__figure[data-figure] {
@@ -408,12 +414,16 @@ html.has-hero-figure .hero__figure {
   opacity: 0;
 }
 
+/* On a phone the drawing is centred above the copy, whichever side the copy
+   takes on desktop. */
 @media (max-width: 900px) {
-  .station__figure {
+  .station__figure,
+  .station--flip .station__figure {
     grid-column: 1 / -1;
+    grid-row: auto;
     order: -1;
-    justify-self: start;
-    width: min(70%, 320px);
+    justify-self: center;
+    width: min(80%, 340px);
     margin-bottom: var(--stack-2);
   }
 }
@@ -579,25 +589,35 @@ html.has-hero-figure .hero__figure {
 .station {
   position: relative;
   z-index: var(--z-content);
-  min-height: 100svh;
+  /* content-height on purpose: six full-viewport sections left a band of empty
+     ground between every pair of drawings */
+  min-height: auto;
   display: flex;
   align-items: center;
-  padding-block: var(--stack-4);
+  padding-block: clamp(56px, 7vh, 96px);
 }
 
 .station__grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--gut);
+  align-items: center;
   width: 100%;
 }
 
 .station__body {
   grid-column: 1 / span 6;
+  grid-row: 1;
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr);
   gap: 0 28px;
   align-items: start;
+}
+
+/* Alternating sides so six stations in a row do not read as one template.
+   The copy keeps its number and rule on its own left edge either way. */
+.station--flip .station__body {
+  grid-column: 7 / span 6;
 }
 
 .station__index {
@@ -677,13 +697,17 @@ html.has-hero-figure .hero__figure {
 
 @media (max-width: 900px) {
   .station {
-    min-height: 100svh;
-    align-items: flex-end;
-    padding-block: 96px 52px;
+    /* content-height, not full-height: six stacked drawings plus full-viewport
+       sections left too much air between stations */
+    min-height: auto;
+    align-items: stretch;
+    padding-block: calc(var(--stack-4) + 12px) var(--stack-4);
   }
 
-  .station__body {
+  .station__body,
+  .station--flip .station__body {
     grid-column: 1 / -1;
+    grid-row: auto;
     grid-template-columns: 44px minmax(0, 1fr);
     gap: 0 18px;
   }

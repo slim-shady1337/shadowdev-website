@@ -50,11 +50,12 @@ No border radius anywhere. No drop shadows. Depth comes from the surface colour,
 
 ## Motion
 
-- One orchestrated gesture: the camera flight. Stations arrive with their section, the hero fragments leave before the reading section, the last stretch cools the parts out and lights the core.
+- The page has no camera and no WebGL: the drawings are the journey. Each figure answers the pointer in its own way (a tile rises, a belt slows, layers open, a dish aims); the page itself never moves unless the reader moves it.
+- Figures mount only while their section is within 240 px of the viewport and are torn down when it leaves — a station already read costs nothing.
 - Entry choreography happens once, on the thesis: a mask reveal on the `h1`, a soft rise for the lead, actions and plate.
 - Section content does not fade up. The SVG diagram draws its leader lines once.
-- `prefers-reduced-motion: reduce` removes the camera entirely, adds `html.no-3d`, drops the dimension rule, and leaves the CSS field as the ground.
-- No WebGL: identical page, CSS field only.
+- `prefers-reduced-motion: reduce`: figures mount at `intensity 0` and rest, entry animations stop, smooth scrolling is dropped for native scroll.
+- Smooth scroll is Lenis; without it the page scrolls natively and behaves identically.
 
 ## Components
 
@@ -66,7 +67,7 @@ No border radius anywhere. No drop shadows. Depth comes from the surface colour,
 
 **Hero figure** — the Hub from `@lucasmarkes/hairline`: one core, eight modules on dashed links; the module under the pointer rises and its link turns solid. It is the hero's only image, drawn in the page's ink through the library's six custom properties, set on `.hero__figure`: `--hairline-plate #0b0d0e` (must equal the ground — it masks what the drawing hides behind itself), `--hairline-hi #ff5e1f` (the lit module and its link), `--hairline-edge #a7adb1`, `--hairline-mid #6e767a`, `--hairline-lo rgba(140,146,152,.34)`, `--hairline-stroke 1`. `role="img"` and focus come from the library; the label is bilingual. At `intensity .62` it answers a pointer firmly without twitching; under `prefers-reduced-motion` it mounts at `intensity 0` and rests. It fills the upper right above 1100 px, sits at the upper left between 900 and 1100, and at 900 and below it becomes the first item of a column above the copy — its host stays `position: relative` there, because the library's `svg` is `inset: 0` against the host and would otherwise stretch across the whole hero. In that column a short viewport pushes the headline down rather than under the drawing. The inline SVG still in the hero is the fallback: it shows only when the figure cannot mount, and alone when scripting is off.
 
-**Station** — 100 svh, text on the left six columns behind a vertical hairline, outlined number and rotated kind label in the gutter. The part on the right is either the 3D assembly or, from station 2 on, a Hairline figure: **Station figure** — `.station__figure` is a grid item at columns 7–12 (full width, first row on phones), `position: relative` so the library's `inset: 0` svg stays inside it, sharing the same six `--hairline-*` values as the hero. It mounts only while its section is within 240 px of the viewport and is torn down when it leaves, because its figure (Slow, the belt) keeps a clock running; the copy beside it is never overlapped, since both are grid items rather than layers.
+**Station** — content-height (never a full viewport, so no band of empty ground sits between drawings), text in six columns behind a vertical hairline, outlined number and rotated kind label in the gutter. Every station's part is a Hairline figure: **Station figure** — `.station__figure` is the grid half the copy is not using (7–12, or 1–6 on flipped stations), `position: relative` so the library's `inset: 0` svg stays inside it, sharing the same six `--hairline-*` values as the hero, 600 px wide and centred in its half. The sides alternate so six stations do not read as one template: copy left on 1, 2 and 4; copy right on 3, 5 and 6. On phones the grid collapses, the figure is centred above the copy and the copy keeps its own left alignment. Each figure mounts only while its section is within 240 px of the viewport and is torn down when it leaves; the copy is never overlapped, since both are grid items rather than layers.
 
 ## Voice
 

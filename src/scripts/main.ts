@@ -1,17 +1,15 @@
 /* ==========================================================================
-   Boot: language, navigation, scroll, the lazily mounted 3D world, the form.
+   Boot: language, navigation, scroll, the hairline figures, the form.
    Everything here is progressive: the page is complete without it.
    ========================================================================== */
 
-import type { WorldHandle } from '../three/world';
 import { mountHeroFigure, setHeroFigureLabel } from './hero-figure';
-import { mountMesFigure } from './station-figure';
+import { mountStationFigures } from './station-figure';
 
 type Lang = 'bs' | 'en';
 
 const root = document.documentElement;
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const canRender3d = !root.classList.contains('no-3d') && !prefersReduced;
 
 if (prefersReduced) root.classList.add('reduced');
 
@@ -130,50 +128,6 @@ function setActiveStation(index: number) {
   if (ruleValue) ruleValue.textContent = index >= 0 ? `0${index + 1}` : '00';
 }
 
-/* Camera anchors: each station's section maps to its point on the flight path,
-   so the part on screen always belongs to the text beside it. */
-type Anchor = { p: number; u: number };
-let anchors: Anchor[] = [];
-
-function computeAnchors() {
-  if (!journey) return;
-  const jt = journey.getBoundingClientRect().top + window.scrollY;
-  const span = Math.max(1, journey.offsetHeight - window.innerHeight);
-  const at = (el: Element | null) => {
-    if (!el) return null;
-    const r = el.getBoundingClientRect();
-    return Math.min(1, Math.max(0, (r.top + window.scrollY - jt) / span));
-  };
-
-  const list: Anchor[] = [{ p: 0, u: 0 }];
-  stationEls.forEach((el, i) => {
-    const p = at(el);
-    if (p !== null) list.push({ p, u: (i + 1) / 7 });
-  });
-  const conv = at(convergeEl);
-  if (conv !== null) list.push({ p: conv, u: 0.93 });
-  list.push({ p: 1, u: 1 });
-
-  anchors = list
-    .slice()
-    .sort((a, b) => a.p - b.p)
-    .filter((a, i, arr) => i === 0 || a.p - arr[i - 1].p > 0.001);
-}
-
-function mapU(p: number) {
-  if (anchors.length < 2) return p;
-  if (p <= anchors[0].p) return anchors[0].u;
-  for (let i = 1; i < anchors.length; i++) {
-    if (p <= anchors[i].p) {
-      const a = anchors[i - 1];
-      const b = anchors[i];
-      const k = (p - a.p) / Math.max(1e-6, b.p - a.p);
-      return a.u + (b.u - a.u) * k;
-    }
-  }
-  return anchors[anchors.length - 1].u;
-}
-
 let scrollQueued = false;
 
 /* How far the reader is through the journey, 0 to 1. */
@@ -214,21 +168,7 @@ function onScroll() {
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
-window.addEventListener('resize', () => {
-  computeAnchors();
-  onScroll();
-}, { passive: true });
-
-/* The legend is a reading moment: the scene steps back so text stays first. */
-if (stationEls.length && document.getElementById('sistem')) {
-  const quietIo = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) root.classList.toggle('is-quiet', entry.isIntersecting);
-    },
-    { rootMargin: '-30% 0px -30% 0px', threshold: 0 }
-  );
-  quietIo.observe(document.getElementById('sistem')!);
-}
+window.addEventListener('resize', onScroll, { passive: true });
 
 /* --------------------------------------------------------------------------
    Stations: which part is in front of the reader
@@ -273,21 +213,13 @@ if (diagram) {
 }
 
 /* --------------------------------------------------------------------------
-   Smooth scroll + 3D
+   Smooth scroll
    -------------------------------------------------------------------------- */
 
-const canvas = document.getElementById('world-canvas') as HTMLCanvasElement | null;
-let worldHandle: { setProgress: (p: number) => void; setPointer: (x: number, y: number) => void; start: () => void; stop: () => void; dispose: () => void } | null = null;
 let lenis: { raf: (t: number) => void; scrollTo: (target: unknown, opts?: unknown) => void; stop: () => void; start: () => void; destroy: () => void } | null = null;
 
 async function bootSmoothScroll() {
-  const [{ default: Lenis }, { gsap }, { ScrollTrigger }] = await Promise.all([
-    import('lenis'),
-    import('gsap'),
-    import('gsap/ScrollTrigger')
-  ]);
-
-  gsap.registerPlugin(ScrollTrigger);
+  const { default: Lenis } = await import('lenis');
 
   const instance = new Lenis({
     lerp: 0.1,
@@ -297,61 +229,11 @@ async function bootSmoothScroll() {
   });
   lenis = instance as unknown as typeof lenis;
 
-  instance.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add((time: number) => instance.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-
-  if (journey) {
-    ScrollTrigger.create({
-      trigger: journey,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self: { progress: number }) => {
-        worldHandle?.setProgress(mapU(self.progress));
-      }
-    });
-  }
-}
-
-async function bootWorld() {
-  if (!canRender3d || !canvas) return;
-  const { mountWorld } = await import('../three/world');
-  const handle = mountWorld(canvas, {
-    mobile: window.innerWidth < 760,
-    narrow: window.innerWidth < 900
-  });
-  worldHandle = handle;
-  /* the world may mount after the page has already scrolled */
-  handle.setProgress(mapU(journeyProgress()));
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) handle.start();
-        else handle.stop();
-      }
-    },
-    { threshold: 0 }
-  );
-  if (journey) io.observe(journey);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) handle.stop();
-    else handle.start();
-  });
-
-  if (window.matchMedia('(pointer: fine)').matches) {
-    window.addEventListener(
-      'pointermove',
-      (e) => {
-        handle.setPointer((e.clientX / window.innerWidth) * 2 - 1, -((e.clientY / window.innerHeight) * 2 - 1));
-      },
-      { passive: true }
-    );
-  }
-
-  root.classList.add('is-3d');
-  handle.start();
+  const raf = (time: number) => {
+    instance.raf(time);
+    requestAnimationFrame(raf);
+  };
+  requestAnimationFrame(raf);
 }
 
 function idle(cb: () => void) {
@@ -418,11 +300,9 @@ async function bootHeroFigure() {
    Station figures — the parts drawn as Hairline figures
    -------------------------------------------------------------------------- */
 
-const mesFigureEl = document.getElementById('station-figure-2');
-
 function bootStationFigures() {
-  if (!mesFigureEl) return;
-  mountMesFigure(mesFigureEl, { intensity: prefersReduced ? 0 : 0.6 });
+  const hosts = Array.from(document.querySelectorAll<HTMLElement>('[data-station-figure]'));
+  mountStationFigures(hosts, prefersReduced ? 0 : 0.6);
 }
 
 /* --------------------------------------------------------------------------
@@ -553,27 +433,13 @@ try {
 }
 applyLang(storedLang === 'en' ? 'en' : 'bs');
 bootAnchors();
-computeAnchors();
 onScrollFrame();
 void bootHeroFigure();
 bootStationFigures();
 
-if (canRender3d) {
+/* Smooth scroll is motion; without it the page scrolls natively. */
+if (!prefersReduced) {
   idle(() => {
     void bootSmoothScroll();
   });
-
-  /* The hero has no scene of its own any more, so the WebGL world waits until
-     the reader leaves it. Anchored arrivals mount it straight away. */
-  let worldRequested = false;
-  const requestWorld = () => {
-    if (worldRequested) return;
-    worldRequested = true;
-    void bootWorld();
-  };
-  const armWorld = () => {
-    if (window.scrollY > window.innerHeight * 0.3) requestWorld();
-  };
-  window.addEventListener('scroll', armWorld, { passive: true });
-  armWorld();
 }
